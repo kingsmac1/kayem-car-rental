@@ -5,7 +5,7 @@
 2. [x] M2 — Customer website + booking flow + verification
 3. [x] M3 — WhatsApp AI concierge simulator
 4. [x] M4 — Admin: overview, bookings, fleet, customers
-5. [ ] M5 — Admin: Fleet Command Center
+5. [x] M5 — Admin: Fleet Command Center
 6. [ ] M6 — Admin: inspections, maintenance & documents
 7. [ ] M7 — Admin: chauffeurs, pricing, finance, AI analyst, inbox, corporate, partners, marketing, settings
 8. [ ] M8 — Driver app, corporate portal, partner portal, demo switcher
@@ -13,7 +13,7 @@
 10. [ ] M10 — Final polish, audits, full playwright pass, Lighthouse, build
 
 ## Status
-M1–M4 done. Next: M5 Fleet Command Center (src/pages/admin/Command.tsx stub; simulation in src/services/tracking.ts).
+M1–M5 done. Next: M6 inspections (AI damage compare) + maintenance & documents.
 
 ## Key decisions
 - Vite 8 + React 19 + TS 6, TanStack Router (code-based routes in src/router.tsx, every page lazy-loaded).
@@ -28,6 +28,7 @@ M1–M4 done. Next: M5 Fleet Command Center (src/pages/admin/Command.tsx stub; s
 - Concierge persona = logged-in customer if they have an active rental, else demo customer c-1 (Chiamaka, active Camry). Chat mirrors into admin inbox as conversation `w-sim`.
 - Admin roles/access in src/lib/roles.ts; metrics (revenue, utilisation, profit, LTV) in src/lib/metrics.ts — reused by finance + AI analyst.
 - `react-is` installed explicitly (Recharts peer, skipped by legacy-peer-deps).
+- Map tiles: CARTO dark now needs an API key (returns 'API KEY REQUIRED' tiles), so maps use Esri Dark Gray Canvas (free, attributed). Configurable in src/config/map.ts.
 - Public-site routes used: /business (corporate page) and /earn (partner owners page) because /corporate and /partner are the portals.
 
 ## Known issues
