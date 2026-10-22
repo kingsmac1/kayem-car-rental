@@ -7,13 +7,13 @@
 4. [x] M4 — Admin: overview, bookings, fleet, customers
 5. [x] M5 — Admin: Fleet Command Center
 6. [x] M6 — Admin: inspections, maintenance & documents
-7. [ ] M7 — Admin: chauffeurs, pricing, finance, AI analyst, inbox, corporate, partners, marketing, settings
+7. [x] M7 — Admin: chauffeurs, pricing, finance, AI analyst, inbox, corporate, partners, marketing, settings
 8. [ ] M8 — Driver app, corporate portal, partner portal, demo switcher
 9. [ ] M9 — supabase/schema.sql, .env.example, README.md
 10. [ ] M10 — Final polish, audits, full playwright pass, Lighthouse, build
 
 ## Status
-M1–M6 done. Next: M7 admin chauffeurs, pricing, finance, AI analyst, WhatsApp inbox, corporate, partners, marketing, settings.
+M1–M7 done. Next: M8 driver app (/driver), corporate portal (/corporate), partner portal (/partner), demo-mode switcher (src/components/demo/DemoSwitcher.tsx stub).
 
 ## Key decisions
 - Vite 8 + React 19 + TS 6, TanStack Router (code-based routes in src/router.tsx, every page lazy-loaded).
@@ -32,5 +32,6 @@ M1–M6 done. Next: M7 admin chauffeurs, pricing, finance, AI analyst, WhatsApp 
 - Public-site routes used: /business (corporate page) and /earn (partner owners page) because /corporate and /partner are the portals.
 
 ## Known issues
+- Chrome now returns a Promise from scrollIntoView/scrollTo: never use expression-bodied useEffect with those (React treats the Promise as a cleanup → 'destroy is not a function').
 - `npx tsc -b` takes ~3 min on this machine while the dev server + browser run; it does pass.
 - Hero "Sound on" plays a synthesised engine hum (src/components/site/hero/engineHum.ts) because the placeholder Mixkit clip is silent.

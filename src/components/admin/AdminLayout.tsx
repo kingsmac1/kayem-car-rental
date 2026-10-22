@@ -46,7 +46,9 @@ export default function AdminLayout() {
   const unread = alerts.filter((a) => !a.read).length
   const inboxWaiting = useDb((s) => s.conversations.filter((c) => c.status === 'needs-human').length)
 
-  useEffect(() => setNavOpen(false), [pathname])
+  useEffect(() => {
+    setNavOpen(false)
+  }, [pathname])
   useEffect(() => {
     document.title = `Admin · ${brand.name}`
   }, [])

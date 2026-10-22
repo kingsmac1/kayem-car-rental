@@ -20,8 +20,12 @@ export function Header() {
   const ref = useRef<HTMLElement>(null)
   const pathname = useRouterState({ select: (s) => s.location.pathname })
 
-  useEffect(() => lockScroll(open), [open])
-  useEffect(() => setOpen(false), [pathname])
+  useEffect(() => {
+    lockScroll(open)
+  }, [open])
+  useEffect(() => {
+    setOpen(false)
+  }, [pathname])
 
   // Hide on scroll down, show on scroll up (scroll-driven → GSAP owns it).
   useEffect(() => {

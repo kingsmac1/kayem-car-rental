@@ -14,12 +14,13 @@ import type { City } from '@/config/brand'
 import { brand } from '@/config/brand'
 import { db } from '@/lib/db'
 import { quote } from '@/lib/pricing'
-import { addDays, fmtDay, naira, sleep, startOfDay } from '@/lib/utils'
+import { addDays, fmtDay, fmtTime, naira, sleep, startOfDay } from '@/lib/utils'
 import { carName } from '@/mocks/cars'
 import { locations } from '@/mocks/locations'
 import type { Car, ChatCard, DemoState } from '@/mocks/types'
 import { bookingService, BookingConflictError } from './bookings'
-import { bookability, overlaps } from './fleet'
+import { bookability, docState, overlaps } from './fleet'
+import { depositSummary, outstanding, profitPerCar, revenueBetween, revenueByDay, todayOps, topCustomers, utilisation } from '@/lib/metrics'
 
 // ---------------------------------------------------------------------------
 // Concierge
@@ -462,4 +463,184 @@ function availabilityMessages(s: DemoState, ctx: ConciergeContext, text: string)
     messages: [{ text: `Good news — ${free.length} cars are free in ${ctx.city}, ${rangeText(ctx)}. Top picks:`, card: { kind: 'cars', carIds: free.slice(0, 3).map((c) => c.id) } }, { text: 'Which one should I quote?' }],
     chips: ['Book the first one', 'The second one', 'Talk to a human'],
   }
+}
+
+// ---------------------------------------------------------------------------
+// AI Business Analyst — answers are computed from the live demo data.
+
+
+export interface AnalystAnswer {
+  text: string
+  table?: { columns: string[]; rows: (string | number)[][] }
+  chart?: { kind: 'bar' | 'trend'; data: Record<string, string | number>[]; x: string; y: string; money?: boolean; unit?: string }
+}
+
+export const ANALYST_SUGGESTIONS = [
+  'Which car made the least money last month?',
+  'Who are my top 10 customers?',
+  'How many bookings are due back today?',
+  'What was revenue this month?',
+  'Which cars are always idle?',
+  'Which city makes the most money?',
+  'How much deposit money am I holding?',
+  'Who owes me money?',
+  'Which chauffeur has the best rating?',
+  'Which documents expire soon?',
+  'How many bookings came from WhatsApp?',
+  'Any overdue rentals?',
+]
+
+function period(q: string, now: Date) {
+  const today = startOfDay(now)
+  if (/last month/.test(q)) {
+    const from = new Date(today.getFullYear(), today.getMonth() - 1, 1)
+    const to = new Date(today.getFullYear(), today.getMonth(), 0, 23, 59)
+    return { from, to, label: from.toLocaleDateString('en-GB', { month: 'long' }) }
+  }
+  if (/this month|month to date|mtd/.test(q)) return { from: new Date(today.getFullYear(), today.getMonth(), 1), to: now, label: 'this month' }
+  if (/this week|week/.test(q)) return { from: addDays(today, -((today.getDay() + 6) % 7)), to: now, label: 'this week' }
+  if (/today/.test(q)) return { from: today, to: now, label: 'today' }
+  if (/year|ytd/.test(q)) return { from: new Date(today.getFullYear(), 0, 1), to: now, label: 'this year' }
+  return { from: addDays(today, -30), to: now, label: 'the last 30 days' }
+}
+
+export async function analystAnswer(question: string, s: DemoState = db.get(), now = new Date()): Promise<AnalystAnswer> {
+  await sleep(700)
+  const q = question.toLowerCase()
+  const p = period(q, now)
+  const short = (n: number) => naira(n)
+
+  if (/(least|lowest|worst|most|highest|best|top).*(car|vehicle)|(car|vehicle).*(least|most|made|earn|profit)/.test(q) && !/customer|chauffeur|driver|city/.test(q)) {
+    const rows = profitPerCar(s, p.from, p.to)
+    const byRevenue = [...rows].sort((a, b) => a.revenue - b.revenue)
+    const worst = /least|lowest|worst/.test(q)
+    const pick = worst ? byRevenue[0] : byRevenue[byRevenue.length - 1]
+    const list = worst ? byRevenue.slice(0, 5) : [...byRevenue].reverse().slice(0, 5)
+    return {
+      text: `${worst ? 'Lowest' : 'Highest'} earner in ${p.label}: **${carName(pick.car)}** (${pick.car.city}) with ${short(pick.revenue)} revenue, ${short(pick.maintenance)} maintenance and ${Math.round(pick.utilisation * 100)}% utilisation.${worst && pick.utilisation < 0.25 ? ' It sat idle most of the period — consider a price cut or moving it to a busier city.' : ''}`,
+      table: { columns: ['Car', 'City', 'Revenue', 'Maintenance', 'Profit', 'Utilisation'], rows: list.map((r) => [carName(r.car), r.car.city, short(r.revenue), short(r.maintenance), short(r.profit), `${Math.round(r.utilisation * 100)}%`]) },
+      chart: { kind: 'bar', data: list.map((r) => ({ car: r.car.model.split(' ').slice(0, 2).join(' '), revenue: r.revenue })), x: 'car', y: 'revenue', money: true },
+    }
+  }
+
+  if (/top|best|biggest|loyal/.test(q) && /customer|client/.test(q)) {
+    const n = Number(q.match(/\d+/)?.[0] ?? 10)
+    const top = topCustomers(s, n)
+    return {
+      text: `Your top ${top.length} customers by lifetime value. ${top[0]?.customer.name} leads with ${short(top[0]?.ltv ?? 0)} over ${top[0]?.trips} trips.`,
+      table: { columns: ['#', 'Customer', 'City', 'Trips', 'Lifetime value'], rows: top.map((t, i) => [i + 1, t.customer.name, t.customer.city, t.trips, short(t.ltv)]) },
+    }
+  }
+
+  if (/due back|returning|returns? today|coming back/.test(q)) {
+    const ops = todayOps(s, now)
+    const list = [...ops.dueBack, ...ops.overdue]
+    return {
+      text: `${ops.dueBack.length} booking${ops.dueBack.length === 1 ? ' is' : 's are'} due back today${ops.overdue.length ? `, plus ${ops.overdue.length} already overdue` : ''}.`,
+      table: list.length ? { columns: ['Ref', 'Car', 'Customer', 'Due', 'Status'], rows: list.map((b) => [b.ref, carName(s.cars.find((c) => c.id === b.carId)!), s.customers.find((c) => c.id === b.customerId)?.name ?? '', `${fmtDay(b.end)} ${fmtTime(b.end)}`, new Date(b.end) < now ? 'Overdue' : 'Due today']) } : undefined,
+    }
+  }
+
+  if (/overdue|late/.test(q)) {
+    const od = todayOps(s, now).overdue
+    return {
+      text: od.length ? `${od.length} rental${od.length > 1 ? 's are' : ' is'} overdue right now.` : 'Nothing is overdue right now.',
+      table: od.length ? { columns: ['Ref', 'Car', 'Customer', 'Was due', 'Phone'], rows: od.map((b) => { const c = s.customers.find((x) => x.id === b.customerId); return [b.ref, carName(s.cars.find((x) => x.id === b.carId)!), c?.name ?? '', `${fmtDay(b.end)} ${fmtTime(b.end)}`, c?.phone ?? ''] }) } : undefined,
+    }
+  }
+
+  if (/revenue|income|sales|made|earn/.test(q) && !/city|channel/.test(q)) {
+    const total = revenueBetween(s, p.from, p.to)
+    const prevFrom = new Date(+p.from - (+p.to - +p.from))
+    const prev = revenueBetween(s, prevFrom, p.from)
+    const change = prev ? Math.round(((total - prev) / prev) * 100) : 0
+    const days = revenueByDay(s, p.from, p.to)
+    return {
+      text: `Revenue ${p.label}: **${short(total)}**${prev ? ` — ${change >= 0 ? 'up' : 'down'} ${Math.abs(change)}% on the period before (${short(prev)})` : ''}.`,
+      chart: { kind: 'trend', data: days.map((d) => ({ day: fmtDay(d.date).replace(/^\w+ /, ''), revenue: d.revenue })), x: 'day', y: 'revenue', money: true },
+    }
+  }
+
+  if (/idle|utili[sz]ation|sold out|busy|demand/.test(q)) {
+    const rows = profitPerCar(s, addDays(now, -30), now).sort((a, b) => a.utilisation - b.utilisation)
+    const idle = rows.filter((r) => r.utilisation < 0.25)
+    const hot = rows.filter((r) => r.utilisation > 0.75)
+    return {
+      text: `Fleet utilisation over 30 days is ${Math.round(utilisation(s, addDays(now, -30), now) * 100)}%. ${idle.length} car${idle.length === 1 ? ' is' : 's are'} mostly idle (<25%)${hot.length ? ` and ${hot.length} are nearly always booked (>75%) — those can take a price rise` : ''}.`,
+      table: { columns: ['Car', 'City', 'Utilisation', 'Daily rate'], rows: [...idle, ...hot].map((r) => [carName(r.car), r.car.city, `${Math.round(r.utilisation * 100)}%`, short(r.car.rates.daily)]) },
+      chart: { kind: 'bar', data: rows.slice(0, 8).map((r) => ({ car: r.car.model.split(' ').slice(0, 2).join(' '), utilisation: Math.round(r.utilisation * 100) })), x: 'car', y: 'utilisation', money: false, unit: '%' },
+    }
+  }
+
+  if (/city|cities|location/.test(q)) {
+    const rows = (['Lagos', 'Abuja', 'Port Harcourt'] as const).map((city) => {
+      const ids = new Set(s.cars.filter((c) => c.city === city).map((c) => c.id))
+      const rev = s.bookings.filter((b) => ids.has(b.carId) && b.status !== 'cancelled' && new Date(b.end) >= p.from && new Date(b.start) <= p.to).reduce((a, b) => a + b.total, 0)
+      return { city, rev, cars: ids.size }
+    }).sort((a, b) => b.rev - a.rev)
+    return {
+      text: `${rows[0].city} brings in the most: ${short(rows[0].rev)} in ${p.label} from ${rows[0].cars} cars (${short(Math.round(rows[0].rev / rows[0].cars))} per car).`,
+      table: { columns: ['City', 'Cars', 'Revenue', 'Per car'], rows: rows.map((r) => [r.city, r.cars, short(r.rev), short(Math.round(r.rev / r.cars))]) },
+      chart: { kind: 'bar', data: rows.map((r) => ({ city: r.city, revenue: r.rev })), x: 'city', y: 'revenue', money: true },
+    }
+  }
+
+  if (/deposit/.test(q)) {
+    const d = depositSummary(s)
+    return { text: `You’re holding ${short(d.held)} in deposits right now. Lifetime: ${short(d.refunded)} refunded in full and ${short(d.deducted)} deducted for damage, fuel, late returns and fines.`, table: { columns: ['Held now', 'Refunded', 'Deducted'], rows: [[short(d.held), short(d.refunded), short(d.deducted)]] } }
+  }
+
+  if (/owe|outstanding|unpaid|debt|balance/.test(q)) {
+    const o = outstanding(s).filter((x) => x.booking.status !== 'pending')
+    const sum = o.reduce((a, x) => a + x.due, 0)
+    return { text: `${o.length} booking${o.length === 1 ? ' has' : 's have'} unpaid balances totalling ${short(sum)}.`, table: { columns: ['Ref', 'Customer', 'Status', 'Owed'], rows: o.map((x) => [x.booking.ref, s.customers.find((c) => c.id === x.booking.customerId)?.name ?? '', x.booking.status, short(x.due)]) } }
+  }
+
+  if (/chauffeur|driver/.test(q)) {
+    const list = [...s.chauffeurs].sort((a, b) => b.rating - a.rating || b.trips - a.trips)
+    return { text: `${list[0].name} (${list[0].city}) has the best rating at ${list[0].rating.toFixed(1)}★ over ${list[0].trips} trips.`, table: { columns: ['Chauffeur', 'City', 'Rating', 'Trips', 'Available'], rows: list.map((d) => [d.name, d.city, d.rating.toFixed(1), d.trips, d.available ? 'Yes' : 'No']) } }
+  }
+
+  if (/document|licen[cs]e|insurance|expir/.test(q)) {
+    const rows = s.cars.flatMap((c) => c.documents.filter((d) => docState(d.expires) !== 'ok').map((d) => [carName(c), c.plate, d.type, fmtDay(d.expires), docState(d.expires) === 'expired' ? 'Expired' : 'Expiring']))
+    return { text: rows.length ? `${rows.length} document${rows.length > 1 ? 's need' : ' needs'} attention. Expired documents block the car from booking until renewed.` : 'All car documents are valid for at least 30 days.', table: rows.length ? { columns: ['Car', 'Plate', 'Document', 'Expiry', 'State'], rows } : undefined }
+  }
+
+  if (/whatsapp|channel|website|walk.?in|source/.test(q)) {
+    const by: Record<string, number> = {}
+    for (const b of s.bookings.filter((x) => x.status !== 'cancelled' && new Date(x.createdAt) >= p.from)) by[b.channel] = (by[b.channel] ?? 0) + 1
+    const total = Object.values(by).reduce((a, n) => a + n, 0)
+    const rows = Object.entries(by).sort((a, b) => b[1] - a[1])
+    return {
+      text: `${by.whatsapp ?? 0} of ${total} bookings (${Math.round(((by.whatsapp ?? 0) / Math.max(1, total)) * 100)}%) in ${p.label} came through WhatsApp.`,
+      table: { columns: ['Channel', 'Bookings', 'Share'], rows: rows.map(([k, n]) => [k, n, `${Math.round((n / total) * 100)}%`]) },
+      chart: { kind: 'bar', data: rows.map(([k, n]) => ({ channel: k, bookings: n })), x: 'channel', y: 'bookings', money: false },
+    }
+  }
+
+  return { text: `I can answer questions about revenue, cars, customers, utilisation, deposits, unpaid balances, chauffeurs, documents and booking channels. Try: “${ANALYST_SUGGESTIONS[0]}”` }
+}
+
+/** The owner's daily WhatsApp summary, computed from today's numbers. */
+export function dailySummary(s: DemoState = db.get(), now = new Date()) {
+  const today = startOfDay(now)
+  const ops = todayOps(s, now)
+  const rev = revenueBetween(s, today, now)
+  const yRev = revenueBetween(s, addDays(today, -1), addDays(today, -1))
+  const owed = outstanding(s).filter((o) => o.booking.status !== 'pending').reduce((a, o) => a + o.due, 0)
+  const util = Math.round(utilisation(s, addDays(today, -7), now) * 100)
+  const docs = s.cars.flatMap((c) => c.documents).filter((d) => docState(d.expires) !== 'ok').length
+  return [
+    `☀️ ${brand.shortName} daily summary — ${fmtDay(now)}`,
+    ``,
+    `💰 Revenue today: ${naira(rev)} (yesterday ${naira(yRev)})`,
+    `🚗 Cars out: ${ops.carsOut.length} of ${s.cars.length} · 7-day utilisation ${util}%`,
+    `📥 Pick-ups today: ${ops.pickupsToday.length} · Returns due: ${ops.dueBack.length}`,
+    ops.overdue.length ? `⚠️ Overdue: ${ops.overdue.map((b) => b.ref).join(', ')}` : `✅ Nothing overdue`,
+    `🧾 Unpaid balances: ${naira(owed)}`,
+    docs ? `📄 ${docs} car document${docs > 1 ? 's' : ''} need renewing` : `📄 All documents valid`,
+    `💬 WhatsApp chats waiting for a human: ${s.conversations.filter((c) => c.status === 'needs-human').length}`,
+    ``,
+    `Reply “details” for the full report.`,
+  ].join('\n')
 }
