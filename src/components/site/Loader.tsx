@@ -13,6 +13,9 @@ function shouldShow() {
   }
 }
 
+/** Seconds the hero intro should wait: longer only when the start-lights loader is showing. */
+export const introDelay = shouldShow() ? 1.5 : 0.15
+
 /** Five start lights come on one by one, then "lights out" and the curtain lifts. First visit per session, < 2s. */
 export function Loader({ onDone }: { onDone?: () => void }) {
   const [show, setShow] = useState(shouldShow)

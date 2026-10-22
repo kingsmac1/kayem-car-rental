@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from 'react'
+import { useRef, useSyncExternalStore } from 'react'
 import { DEMO_VERSION, generateDemoState } from '@/mocks/generate'
 import type { DemoState } from '@/mocks/types'
 import { DAY, startOfDay } from './utils'
@@ -91,9 +91,33 @@ export function resetDemo() {
   sessionListeners.forEach((l) => l())
 }
 
-/** Subscribe a component to a slice of the demo database. */
+function shallowEqual(a: unknown, b: unknown) {
+  if (Object.is(a, b)) return true
+  if (Array.isArray(a) && Array.isArray(b)) return a.length === b.length && a.every((v, i) => Object.is(v, b[i]))
+  if (a && b && typeof a === 'object' && typeof b === 'object') {
+    const ka = Object.keys(a as object)
+    const kb = Object.keys(b as object)
+    return ka.length === kb.length && ka.every((k) => Object.is((a as Record<string, unknown>)[k], (b as Record<string, unknown>)[k]))
+  }
+  return false
+}
+
+/**
+ * Subscribe a component to a slice of the demo database.
+ * Results are cached per state version and shallow-compared, so selectors may
+ * safely return new arrays/objects (e.g. `s.cars.filter(...)`).
+ */
 export function useDb<T>(selector: (s: DemoState) => T): T {
-  return useSyncExternalStore(db.subscribe, () => selector(state), () => selector(state))
+  const cache = useRef<{ s?: DemoState; sel?: (s: DemoState) => T; v?: T }>({})
+  const get = () => {
+    const c = cache.current
+    if (c.s === state && c.sel === selector) return c.v as T
+    const next = selector(state)
+    const v = c.s !== undefined && shallowEqual(next, c.v) ? (c.v as T) : next
+    cache.current = { s: state, sel: selector, v }
+    return v
+  }
+  return useSyncExternalStore(db.subscribe, get, get)
 }
 
 /** Log a staff action to the audit trail. */

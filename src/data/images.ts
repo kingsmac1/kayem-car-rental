@@ -18,8 +18,10 @@ export const images = {
     depth: '/images/hero/hero-depth.png',
     /** Static fallback for reduced motion / low-power devices. */
     fallback: '/images/hero/hero-fallback.webp',
-    /** Optional ambient clip. Leave empty to hide the "Sound on" toggle. */
-    video: '',
+    /** Optional ambient clip (Mixkit free licence placeholder). Set to '' to hide the film + "Sound on" toggle. */
+    video: '/images/hero/night-drive-720.mp4',
+    videoSmall: '/images/hero/night-drive-360.mp4',
+    videoPoster: '/images/hero/night-drive-poster.jpg',
   },
   cars: {
     camry: car('camry'),

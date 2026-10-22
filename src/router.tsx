@@ -59,7 +59,15 @@ const fleet = createRoute({
   }),
   component: page(() => import('@/pages/site/Fleet')),
 })
-const carDetail = s('/fleet/$carId', () => import('@/pages/site/CarDetail'))
+const carDetail = createRoute({
+  getParentRoute: () => site,
+  path: '/fleet/$carId',
+  validateSearch: (q: Record<string, unknown>): { start?: string; end?: string } => ({
+    start: typeof q.start === 'string' ? q.start : undefined,
+    end: typeof q.end === 'string' ? q.end : undefined,
+  }),
+  component: page(() => import('@/pages/site/CarDetail')),
+})
 const book = createRoute({
   getParentRoute: () => site,
   path: '/book',

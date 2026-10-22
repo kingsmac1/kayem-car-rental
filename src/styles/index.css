@@ -201,3 +201,5 @@ html.lenis, html.lenis body { height: auto; }
 @keyframes popIn { from { transform: translate(-50%, -48%) scale(.97); opacity: 0 } to { transform: translate(-50%, -50%); opacity: 1 } }
 @keyframes scan { 0% { top: 0 } 50% { top: calc(100% - 2px) } 100% { top: 0 } }
 @keyframes pulseDot { 0%, 100% { opacity: 1 } 50% { opacity: .35 } }
+@keyframes accDown { from { height: 0 } to { height: var(--radix-accordion-content-height) } }
+@keyframes accUp { from { height: var(--radix-accordion-content-height) } to { height: 0 } }

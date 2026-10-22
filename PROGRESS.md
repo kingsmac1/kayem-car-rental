@@ -2,7 +2,7 @@
 
 ## Build plan
 1. [x] M1 — Reference study (MOTION-SPEC.md), impeccable init (PRODUCT.md, DESIGN.md), Vite+React+TS+TanStack Router setup, brand config, design system, mock data, service layer
-2. [ ] M2 — Customer website + booking flow + verification
+2. [x] M2 — Customer website + booking flow + verification
 3. [ ] M3 — WhatsApp AI concierge simulator
 4. [ ] M4 — Admin: overview, bookings, fleet, customers
 5. [ ] M5 — Admin: Fleet Command Center
@@ -13,7 +13,7 @@
 10. [ ] M10 — Final polish, audits, full playwright pass, Lighthouse, build
 
 ## Status
-M1 done. Next: M2 customer website (Home, Fleet, Car detail, Booking wizard + verification, Account, Business, Earn, About, Contact, FAQ, Terms, Privacy).
+M1–M2 done. Next: M3 WhatsApp AI concierge simulator (src/components/concierge/ConciergeWidget.tsx is a stub; brain is in src/services/ai.ts).
 
 ## Key decisions
 - Vite 8 + React 19 + TS 6, TanStack Router (code-based routes in src/router.tsx, every page lazy-loaded).
@@ -27,3 +27,5 @@ M1 done. Next: M2 customer website (Home, Fleet, Car detail, Booking wizard + ve
 - Public-site routes used: /business (corporate page) and /earn (partner owners page) because /corporate and /partner are the portals.
 
 ## Known issues
+- `npx tsc -b` takes ~3 min on this machine while the dev server + browser run; it does pass.
+- Hero "Sound on" plays a synthesised engine hum (src/components/site/hero/engineHum.ts) because the placeholder Mixkit clip is silent.
