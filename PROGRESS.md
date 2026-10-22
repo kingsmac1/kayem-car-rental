@@ -9,11 +9,11 @@
 6. [x] M6 — Admin: inspections, maintenance & documents
 7. [x] M7 — Admin: chauffeurs, pricing, finance, AI analyst, inbox, corporate, partners, marketing, settings
 8. [x] M8 — Driver app, corporate portal, partner portal, demo switcher
-9. [ ] M9 — supabase/schema.sql, .env.example, README.md
+9. [x] M9 — supabase/schema.sql, .env.example, README.md
 10. [ ] M10 — Final polish, audits, full playwright pass, Lighthouse, build
 
 ## Status
-M1–M8 done. Next: M9 supabase/schema.sql, .env.example, README.md.
+M1–M9 done. Next: M10 final polish (impeccable audit/polish, slop audit, originality audit, full playwright pass, Lighthouse, build).
 
 ## Key decisions
 - Vite 8 + React 19 + TS 6, TanStack Router (code-based routes in src/router.tsx, every page lazy-loaded).
