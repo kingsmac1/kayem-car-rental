@@ -1,5 +1,5 @@
 import { Link, useNavigate } from '@tanstack/react-router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -22,7 +22,14 @@ const signupSchema = z.object({
 })
 
 /** Mock customer login / signup. TODO: connect real provider — Supabase Auth (email OTP or phone OTP). */
+function useTitle() {
+  useEffect(() => {
+    document.title = `Log in | ${brand.name}`
+  }, [])
+}
+
 export default function Login() {
+  useTitle()
   const [tab, setTab] = useState<'login' | 'signup'>('login')
   const navigate = useNavigate()
   const login = useForm<z.infer<typeof loginSchema>>({ resolver: zodResolver(loginSchema) })

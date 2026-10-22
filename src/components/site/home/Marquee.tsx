@@ -51,8 +51,10 @@ export function Marquee() {
         {rows.map((r) => (
           <div key={r.label} className="flex items-center gap-6">
             <p className="label w-28 shrink-0 pl-[var(--gutter)] text-mute md:w-44">{r.label}</p>
-            <div className="relative flex-1 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
-              <div data-track className="flex w-max gap-16 pr-16">
+            <div className="relative flex-1 overflow-hidden">
+              <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-ink to-transparent" aria-hidden />
+              <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-ink to-transparent" aria-hidden />
+              <div data-track className="flex w-max gap-16 pr-16 will-change-transform">
                 {[...r.items, ...r.items, ...r.items, ...r.items].map((n, i) => (
                   <Wordmark key={i} name={n} i={i} />
                 ))}

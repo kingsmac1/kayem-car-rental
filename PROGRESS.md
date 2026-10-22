@@ -29,9 +29,11 @@ M1–M9 done. Next: M10 final polish (impeccable audit/polish, slop audit, origi
 - Admin roles/access in src/lib/roles.ts; metrics (revenue, utilisation, profit, LTV) in src/lib/metrics.ts — reused by finance + AI analyst.
 - `react-is` installed explicitly (Recharts peer, skipped by legacy-peer-deps).
 - Map tiles: CARTO dark now needs an API key (returns 'API KEY REQUIRED' tiles), so maps use Esri Dark Gray Canvas (free, attributed). Configurable in src/config/map.ts.
+- Perf work (M10): static HTML hero shell in index.html, modulepreload for home chunks (vite plugin), async Google Fonts, below-fold home sections + footer mount on first scroll (src/components/site/Deferred.tsx), concierge/demo switcher mount after idle, static grain on touch, marquee mask removed. Three.js chunk (~240KB gz) only loads on desktop after idle.
 - Public-site routes used: /business (corporate page) and /earn (partner owners page) because /corporate and /partner are the portals.
 
 ## Known issues
+- Lighthouse mobile (home) on this 2014 dual-core MacBook (Lighthouse benchmarkIndex 260–700, WindowServer ~100% CPU): Performance 36–53 with default 4x CPU throttle, up to 72 with a calibrated 1.5x multiplier; Accessibility 100, Best practices 100, SEO 100 after robots.txt. Target 80+ not verified on this hardware — re-run on a modern machine or PageSpeed Insights after deploy.
 - Chrome now returns a Promise from scrollIntoView/scrollTo: never use expression-bodied useEffect with those (React treats the Promise as a cleanup → 'destroy is not a function').
 - `npx tsc -b` takes ~3 min on this machine while the dev server + browser run; it does pass.
 - Hero "Sound on" plays a synthesised engine hum (src/components/site/hero/engineHum.ts) because the placeholder Mixkit clip is silent.

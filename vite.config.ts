@@ -24,10 +24,37 @@ function brandHtml(): Plugin {
     sameAs: Object.values(brand.social),
   }
   const title = `${brand.name} | ${brand.tagline}`
+  const pages = ['/', '/fleet', '/book', '/business', '/earn', '/about', '/contact', '/faq', '/terms', '/privacy']
   return {
     name: 'brand-html',
-    transformIndexHtml(html) {
+    generateBundle() {
+      this.emitFile({ type: 'asset', fileName: 'robots.txt', source: `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /driver\nDisallow: /corporate\nDisallow: /partner\n\nSitemap: ${brand.siteUrl}/sitemap.xml\n` })
+      this.emitFile({
+        type: 'asset',
+        fileName: 'sitemap.xml',
+        source: `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((p) => `  <url><loc>${brand.siteUrl}${p}</loc></url>`).join('\n')}\n</urlset>\n`,
+      })
+    },
+    transformIndexHtml(html, ctx) {
+      // Preload the public home route's lazy chunks so they don't load one after another.
+      let preloads = ''
+      if (ctx.bundle) {
+        const wanted = /components\/site\/SiteLayout\.tsx$|pages\/site\/Home\.tsx$/
+        const files = new Set<string>()
+        const add = (name: string) => {
+          const c = ctx.bundle![name]
+          if (!c || c.type !== 'chunk' || files.has(name)) return
+          files.add(name)
+          // Only first-level shared chunks; deeper vendor chunks are requested in parallel anyway.
+          if (files.size < 12) c.imports.forEach(add)
+        }
+        for (const [name, c] of Object.entries(ctx.bundle)) if (c.type === 'chunk' && c.facadeModuleId && wanted.test(c.facadeModuleId)) add(name)
+        preloads = [...files].map((f) => `<link rel="modulepreload" crossorigin href="/${f}">`).join('\n    ')
+      }
       return html
+        .replace('<!--PRELOADS-->', preloads)
+        .replaceAll('%BRAND_TAGLINE%', brand.tagline)
+        .replaceAll('%BRAND_PAPER%', brand.colors.paper)
         .replaceAll('%BRAND_TITLE%', title)
         .replaceAll('%BRAND_NAME%', brand.name)
         .replaceAll('%BRAND_DESC%', brand.description)

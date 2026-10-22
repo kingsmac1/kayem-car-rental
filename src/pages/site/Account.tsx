@@ -1,5 +1,5 @@
 import { Link, useNavigate } from '@tanstack/react-router'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AlertTriangle, Camera, Car as CarIcon, CheckCircle2, Clock, Copy, Gift, LogOut, MapPin, Receipt, RotateCcw, ShieldCheck, Timer, Wrench, XCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import { brand } from '@/config/brand'
@@ -22,7 +22,14 @@ const STATUS_TONE: Record<Booking['status'], 'ok' | 'warn' | 'bad' | 'accent' | 
   pending: 'warn', confirmed: 'accent', active: 'ok', returned: 'info', closed: 'mute', cancelled: 'bad',
 }
 
+function useTitle() {
+  useEffect(() => {
+    document.title = `My trips | ${brand.name}`
+  }, [])
+}
+
 export default function Account() {
+  useTitle()
   const session = useSession()
   const navigate = useNavigate()
   const customer = useDb((s) => s.customers.find((c) => c.id === session.customerId))

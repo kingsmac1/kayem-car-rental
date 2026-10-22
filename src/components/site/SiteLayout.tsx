@@ -1,9 +1,11 @@
 import { Outlet, useRouterState } from '@tanstack/react-router'
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { ScrollTrigger } from '@/lib/gsap'
+import { brand } from '@/config/brand'
 import { scrollToTop, startSmoothScroll, stopSmoothScroll } from '@/lib/smooth'
 import { Header } from './Header'
 import { Footer } from './Footer'
+import { Deferred } from './Deferred'
 import { Cursor } from './Cursor'
 import { Loader } from './Loader'
 import { PageCurtain } from './PageCurtain'
@@ -12,6 +14,13 @@ const Concierge = lazy(() => import('@/components/concierge/ConciergeWidget'))
 
 export default function SiteLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
+  // The concierge isn't needed for first paint: mount it once the page is idle.
+  const [idle, setIdle] = useState(false)
+  useEffect(() => {
+    const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }
+    if (w.requestIdleCallback) w.requestIdleCallback(() => setIdle(true), { timeout: 3500 })
+    else setTimeout(() => setIdle(true), 2500)
+  }, [])
 
   useEffect(() => {
     startSmoothScroll()
@@ -23,6 +32,7 @@ export default function SiteLayout() {
   }, [])
 
   useEffect(() => {
+    if (pathname === '/') document.title = `${brand.name} | ${brand.tagline}`
     scrollToTop(true)
     // New page content changes layout: let triggers re-measure after paint.
     const t = setTimeout(() => ScrollTrigger.refresh(), 120)
@@ -39,12 +49,16 @@ export default function SiteLayout() {
       <main id="main">
         <Outlet />
       </main>
-      <Footer />
+      <Deferred minHeight={500}>
+        <Footer />
+      </Deferred>
       <Cursor />
       <PageCurtain />
-      <Suspense fallback={null}>
-        <Concierge />
-      </Suspense>
+      {idle && (
+        <Suspense fallback={null}>
+          <Concierge />
+        </Suspense>
+      )}
     </div>
   )
 }

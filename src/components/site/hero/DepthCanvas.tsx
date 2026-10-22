@@ -1,5 +1,4 @@
-import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { useTexture } from '@react-three/drei'
+import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 
@@ -62,7 +61,7 @@ void main() {
 `
 
 function Plane({ image, depth, pointer, onFirstFrame, onSlow }: { image: string; depth: string; pointer: React.RefObject<{ x: number; y: number }>; onFirstFrame: () => void; onSlow: () => void }) {
-  const [tex, dep] = useTexture([image, depth])
+  const [tex, dep] = useLoader(THREE.TextureLoader, [image, depth])
   const { size } = useThree()
   const mouse = useRef(new THREE.Vector2())
   const frames = useRef({ n: 0, t0: 0, reported: false })

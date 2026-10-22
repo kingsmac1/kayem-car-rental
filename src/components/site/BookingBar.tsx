@@ -29,7 +29,7 @@ export function BookingBar({ className }: { className?: string }) {
   const input = 'bg-transparent text-[15px] font-semibold text-paper outline-none [color-scheme:dark] w-full cursor-pointer'
 
   return (
-    <form onSubmit={submit} className={cn('border border-line-strong bg-ink/80 backdrop-blur-md', className)} aria-label="Quick booking">
+    <form onSubmit={submit} className={cn('border border-line-strong bg-ink/95 md:bg-ink/80 md:backdrop-blur-md', className)} aria-label="Quick booking">
       <div className="grid grid-cols-2 md:grid-cols-[1.1fr_1fr_1fr_1.3fr_auto]">
         <label className={cn(cell, 'col-span-2 border-b md:col-span-1 md:border-b-0')}>
           <span className="label text-mute">City</span>

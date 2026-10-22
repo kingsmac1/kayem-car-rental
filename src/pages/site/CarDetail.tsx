@@ -1,5 +1,6 @@
 import { getRouteApi, Link, useNavigate } from '@tanstack/react-router'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { brand } from '@/config/brand'
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowLeft, ArrowRight, Check, ShieldCheck } from 'lucide-react'
 import { useDb } from '@/lib/db'
@@ -37,6 +38,10 @@ export default function CarDetail() {
     const q = valid ? quote({ car, start: s, end: e, mode, extras: [], rules: state.pricing }) : null
     return { valid, book, clash, q, mode }
   }, [car, start, end, state])
+
+  useEffect(() => {
+    if (car) document.title = `${carName(car)} in ${car.city} | ${brand.name}`
+  }, [car])
 
   if (!car || !info) return <NotFound />
   const similar = state.cars.filter((c) => c.id !== car.id && (c.category === car.category || c.city === car.city)).slice(0, 3)

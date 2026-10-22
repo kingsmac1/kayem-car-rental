@@ -19,11 +19,21 @@
     <meta name="twitter:description" content="%BRAND_DESC%" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="%BRAND_FONTS%" />
+    <link rel="preload" as="style" href="%BRAND_FONTS%" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="%BRAND_FONTS%" /></noscript>
     <script type="application/ld+json">%BRAND_JSONLD%</script>
+    <link rel="preload" as="image" href="/images/hero/hero-sm.webp" media="(max-width: 899px)" fetchpriority="high" />
+    <!--PRELOADS-->
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Static first paint; React replaces this on mount. Text comes from src/config/brand.ts at build. -->
+      <div id="shell" style="position:relative;min-height:100svh;overflow:hidden;background:%BRAND_INK%;color:%BRAND_PAPER%">
+        <img src="/images/hero/hero-sm.webp" alt="" fetchpriority="high" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 78%;filter:grayscale(.85) brightness(.7)" />
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,%BRAND_INK% 20%,transparent 70%)"></div>
+      </div>
+      <script>if (location.pathname !== '/') document.getElementById('shell').remove()</script>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

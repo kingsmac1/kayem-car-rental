@@ -1,8 +1,12 @@
-import type { ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
+import { brand } from '@/config/brand'
 import { GridLines, SplitHeading } from './Reveal'
 
 /** Inner-page header: big display title over the timing-sheet grid. */
 export function PageHeader({ title, intro, children, kicker }: { title: string; intro?: ReactNode; children?: ReactNode; kicker?: ReactNode }) {
+  useEffect(() => {
+    document.title = `${title} | ${brand.name}`
+  }, [title])
   return (
     <section className="relative overflow-hidden border-b border-line pt-36 pb-14 md:pt-44 md:pb-20">
       <GridLines />

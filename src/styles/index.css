@@ -164,6 +164,12 @@
   opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   animation: grain 1.2s steps(4) infinite;
+  will-change: transform;
+  contain: strict;
+}
+/* Static grain on phones and low-power devices: the moving layer costs repaints. */
+@media (hover: none), (max-width: 767px) {
+  .grain::after { animation: none; inset: 0; }
 }
 @keyframes grain {
   0% { transform: translate(0, 0); }

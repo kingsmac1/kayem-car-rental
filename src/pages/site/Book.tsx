@@ -47,7 +47,14 @@ function initialDraft(search: ReturnType<typeof route.useSearch>): Draft {
   }
 }
 
+function useTitle() {
+  useEffect(() => {
+    document.title = `Book a car | ${brand.name}`
+  }, [])
+}
+
 export default function Book() {
+  useTitle()
   const search = route.useSearch()
   const state = useDb((s) => s)
   const [step, setStep] = useState(0)

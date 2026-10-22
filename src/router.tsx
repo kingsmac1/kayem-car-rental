@@ -1,18 +1,29 @@
 import { createRootRoute, createRoute, createRouter, lazyRouteComponent, Outlet } from '@tanstack/react-router'
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Toaster } from 'sonner'
 import { NotFound } from '@/components/NotFound'
 
 // The demo switcher is tiny and shared by every portal.
 const DemoSwitcher = lazy(() => import('@/components/demo/DemoSwitcher'))
 
+function LateDemoSwitcher() {
+  const [show, setShow] = useState(false)
+  useEffect(() => {
+    const t = setTimeout(() => setShow(true), 1800)
+    return () => clearTimeout(t)
+  }, [])
+  return show ? (
+    <Suspense fallback={null}>
+      <DemoSwitcher />
+    </Suspense>
+  ) : null
+}
+
 const rootRoute = createRootRoute({
   component: () => (
     <>
       <Outlet />
-      <Suspense fallback={null}>
-        <DemoSwitcher />
-      </Suspense>
+      <LateDemoSwitcher />
       <Toaster
         position="bottom-center"
         theme="dark"
