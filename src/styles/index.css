@@ -1,0 +1,203 @@
+@import 'tailwindcss';
+
+/* Brand values are written to :root by src/lib/theme.ts from src/config/brand.ts.
+   The fallbacks below only matter for the first paint before JS runs. */
+:root {
+  --brand-ink: #0a0a09;
+  --brand-ink-2: #121211;
+  --brand-ink-3: #1b1b19;
+  --brand-paper: #f2efe8;
+  --brand-mute: #9c988e;
+  --brand-accent: #ffd400;
+  --brand-accent-ink: #0a0a09;
+  --brand-ok: #5bd08a;
+  --brand-warn: #ffb020;
+  --brand-bad: #ff5a4e;
+  --font-display-family: 'Unbounded';
+  --font-label-family: 'Michroma';
+  --font-body-family: 'Manrope';
+  --font-mono-family: 'Geist Mono';
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-roll: cubic-bezier(0.7, 0, 0.3, 1);
+  --gutter: 16px;
+  color-scheme: dark;
+}
+@media (min-width: 768px) {
+  :root { --gutter: 24px; }
+}
+@media (min-width: 1200px) {
+  :root { --gutter: 40px; }
+}
+
+@theme inline {
+  --color-ink: var(--brand-ink);
+  --color-ink-2: var(--brand-ink-2);
+  --color-ink-3: var(--brand-ink-3);
+  --color-paper: var(--brand-paper);
+  --color-mute: var(--brand-mute);
+  --color-accent: var(--brand-accent);
+  --color-accent-ink: var(--brand-accent-ink);
+  --color-ok: var(--brand-ok);
+  --color-warn: var(--brand-warn);
+  --color-bad: var(--brand-bad);
+  --color-line: color-mix(in oklab, var(--brand-paper) 11%, transparent);
+  --color-line-strong: color-mix(in oklab, var(--brand-paper) 22%, transparent);
+  --font-display: var(--font-display-family), 'Arial Black', sans-serif;
+  --font-label: var(--font-label-family), 'Arial', sans-serif;
+  --font-body: var(--font-body-family), system-ui, sans-serif;
+  --font-mono: var(--font-mono-family), ui-monospace, monospace;
+  --font-sans: var(--font-body-family), system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    background: var(--brand-ink);
+    -webkit-text-size-adjust: 100%;
+    scrollbar-color: color-mix(in oklab, var(--brand-paper) 25%, transparent) var(--brand-ink);
+  }
+  body {
+    background: var(--brand-ink);
+    color: var(--brand-paper);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--brand-accent);
+    color: var(--brand-accent-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--brand-accent);
+    outline-offset: 3px;
+  }
+  input, textarea, select { caret-color: var(--brand-accent); }
+  a { text-underline-offset: 4px; }
+  h1, h2, h3, h4 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+  img { max-width: 100%; display: block; }
+  button { cursor: pointer; }
+  [disabled] { cursor: not-allowed; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--brand-ink); }
+  ::-webkit-scrollbar-thumb { background: color-mix(in oklab, var(--brand-paper) 18%, transparent); border: 3px solid var(--brand-ink); }
+}
+
+@layer components {
+  /* Michroma label voice — uppercase, wide tracking (brief-pinned). */
+  .label {
+    font-family: var(--font-label);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 10.5px;
+    line-height: 1.4;
+  }
+  .display {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+  }
+  .num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+  .container-x {
+    width: 100%;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* Text-roll hover: label slides up, an identical copy slides in from below. */
+  .roll {
+    display: inline-flex;
+    overflow: hidden;
+    position: relative;
+    vertical-align: top;
+  }
+  .roll > span {
+    display: block;
+    transition: transform 0.42s var(--ease-roll);
+  }
+  .roll > span + span {
+    position: absolute;
+    inset: 0;
+    transform: translateY(105%);
+  }
+  .roll-host:hover .roll > span:first-child,
+  .roll-host:focus-visible .roll > span:first-child { transform: translateY(-105%); }
+  .roll-host:hover .roll > span + span,
+  .roll-host:focus-visible .roll > span + span { transform: translateY(0); }
+
+  /* Fine column lines like a timing sheet. */
+  .grid-lines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding-inline: var(--gutter);
+  }
+  .grid-lines > i { border-left: 1px solid var(--color-line); }
+  .grid-lines > i:last-child { border-right: 1px solid var(--color-line); }
+  .grid-lines > i:nth-child(n + 3) { display: none; }
+  @media (min-width: 900px) {
+    .grid-lines { grid-template-columns: repeat(6, 1fr); }
+    .grid-lines > i:nth-child(n + 3) { display: block; }
+  }
+  .grid-lines.on-paper > i { border-color: color-mix(in oklab, var(--brand-ink) 9%, transparent); }
+
+  .chequer {
+    background-image: conic-gradient(var(--brand-paper) 25%, transparent 0 50%, var(--brand-paper) 0 75%, transparent 0);
+    background-size: 28px 28px;
+  }
+}
+
+/* Film grain, very subtle. */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(4) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-3%, 2%); }
+  50% { transform: translate(2%, -3%); }
+  75% { transform: translate(-1%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: clip; }
+
+/* Leaflet dark tweaks */
+.leaflet-container { background: var(--brand-ink) !important; font-family: var(--font-body) !important; }
+.leaflet-control-attribution { background: color-mix(in oklab, var(--brand-ink) 80%, transparent) !important; color: var(--brand-mute) !important; font-size: 10px !important; }
+.leaflet-control-attribution a { color: var(--brand-paper) !important; }
+.leaflet-bar a { background: var(--brand-ink-2) !important; color: var(--brand-paper) !important; border-color: var(--color-line) !important; }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--brand-ink-2) !important; color: var(--brand-paper) !important; border-radius: 2px !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .grain::after { animation: none; }
+}
+
+@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+@keyframes slideIn { from { transform: translateX(40px); opacity: 0 } to { transform: none; opacity: 1 } }
+@keyframes popIn { from { transform: translate(-50%, -48%) scale(.97); opacity: 0 } to { transform: translate(-50%, -50%); opacity: 1 } }
+@keyframes scan { 0% { top: 0 } 50% { top: calc(100% - 2px) } 100% { top: 0 } }
+@keyframes pulseDot { 0%, 100% { opacity: 1 } 50% { opacity: .35 } }

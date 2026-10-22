@@ -1,0 +1,338 @@
+- generic [ref=e2]:
+  - generic:
+    - generic:
+      - generic "drag":
+        - generic:
+          - generic:
+            - generic [aria-hidden]
+          - generic:
+            - generic [aria-hidden]
+    - generic:
+      - generic "See more":
+        - generic:
+          - generic:
+            - generic [aria-hidden]
+          - generic:
+            - generic [aria-hidden]
+    - generic:
+      - generic "Sound on":
+        - generic:
+          - generic:
+            - generic [aria-hidden]
+          - generic:
+            - generic [aria-hidden]
+  - navigation:
+    - link [ref=e3] [cursor=pointer]:
+      - /url: /#hero
+    - button [ref=e4] [cursor=pointer]
+    - generic [ref=e8]:
+      - list [ref=e9]:
+        - listitem [ref=e10]:
+          - link "About" [ref=e11] [cursor=pointer]:
+            - /url: /#about
+        - listitem [ref=e13]:
+          - link "History" [ref=e14] [cursor=pointer]:
+            - /url: /#history
+        - listitem [ref=e16]:
+          - link "Gallery" [ref=e17] [cursor=pointer]:
+            - /url: /#gallery
+        - listitem [ref=e19]:
+          - link "Calendar" [ref=e20] [cursor=pointer]:
+            - /url: /#calendar
+        - listitem [ref=e22]:
+          - link "Contact" [ref=e23] [cursor=pointer]:
+            - /url: /#contact
+      - generic [ref=e25]:
+        - link "Instagram" [ref=e26] [cursor=pointer]:
+          - /url: https://www.instagram.com/nickho_98
+          - generic:
+            - generic
+            - generic
+        - link "LinkedIn" [ref=e28] [cursor=pointer]:
+          - /url: https://www.linkedin.com/in/nick-ho-042054327/
+          - generic:
+            - generic
+            - generic
+        - link "nick@nickho-motorsports.com" [ref=e30] [cursor=pointer]:
+          - /url: mailto:nick@nickho-motorsports.com
+          - generic:
+            - generic
+            - generic
+  - generic [ref=e33]:
+    - generic [ref=e34]:
+      - generic [ref=e35]:
+        - img "Blurred close-up of a car roof with a dark background and yellow lights overhead." [ref=e43]
+        - img "Yellow and black racing car wing with adjacent side mirror reflecting a blurred background." [ref=e45]
+        - img "Race car driver wearing yellow, black, and white suit with sponsor logos and a blue helmet." [ref=e47]
+      - generic [ref=e51]:
+        - generic [ref=e52]:
+          - generic [ref=e53]:
+            - generic [ref=e54]
+            - generic [ref=e58]
+            - generic [ref=e62]
+          - generic [ref=e66]:
+            - paragraph [ref=e67]: Every lap is a test. Not just of the car, but of myself.
+            - generic [ref=e72]
+            - generic [ref=e79]
+            - generic [ref=e83]
+        - generic [ref=e87]:
+          - generic [ref=e88]:
+            - heading "Nick Ho" [level=1] [ref=e89]
+            - paragraph [ref=e94]: For me, racing is about more than chasing speed, it’s about chasing my limits. Every lap is a test. Not just of the car, but of myself.
+          - generic [ref=e102]:
+            - paragraph [ref=e103]: Next race
+            - generic [ref=e774]: TBA
+      - generic:
+        - generic:
+          - generic:
+            - generic: "9"
+            - generic: "8"
+    - generic "I’m driven by progress, by finding that one percent of improvement that most people overlook. Every mistake is a lesson, every session a chance, to become sharper, more focused, more complete." [ref=e111]:
+      - generic [aria-hidden] [ref=e776]: I’m driven by progress, by
+      - generic [aria-hidden] [ref=e778]: finding that one percent of
+      - generic [aria-hidden] [ref=e780]: improvement that most people
+      - generic [aria-hidden] [ref=e782]: overlook. Every mistake is a
+      - generic [aria-hidden] [ref=e784]: lesson, every session a
+      - generic [aria-hidden] [ref=e786]: chance, to become sharper,
+      - generic [aria-hidden] [ref=e788]: more focused, more complete.
+    - generic [ref=e132]:
+      - list [ref=e134]:
+        - listitem [ref=e135]
+        - listitem [ref=e138]
+        - listitem [ref=e141]
+        - listitem [ref=e144]
+        - listitem [ref=e147]
+        - listitem [ref=e150]
+        - listitem [ref=e153]
+        - listitem [ref=e156]
+        - listitem [ref=e159]
+        - listitem [ref=e162]
+        - listitem [ref=e165]
+        - listitem [ref=e168]
+        - listitem [ref=e171]
+        - listitem [ref=e174]
+        - listitem [ref=e177]
+        - listitem [ref=e180]
+        - listitem [ref=e183]
+        - listitem [ref=e186]
+        - listitem [ref=e189]
+        - listitem [ref=e192]
+        - listitem [ref=e195]
+        - listitem [ref=e198]
+        - listitem [ref=e201]
+        - listitem [ref=e204]
+        - listitem [ref=e207]
+        - listitem [ref=e210]
+      - link "Become partner" [ref=e213] [cursor=pointer]:
+        - /url: "#contact"
+        - generic:
+          - generic:
+            - generic [aria-hidden]
+          - generic:
+            - generic [aria-hidden]
+    - generic [ref=e230]:
+      - link "Skip" [ref=e232] [cursor=pointer]:
+        - /url: "#media"
+        - generic:
+          - generic:
+            - generic [aria-hidden]
+          - generic:
+            - generic [aria-hidden]
+      - generic [ref=e238]:
+        - generic [ref=e241]:
+          - generic [ref=e242]: "0"
+          - generic [ref=e243]: "1"
+          - generic [ref=e244]: "2"
+          - generic [ref=e245]: "3"
+          - generic [ref=e246]: "4"
+          - generic [ref=e247]: "5"
+          - generic [ref=e248]: "6"
+          - generic [ref=e249]: "7"
+          - generic [ref=e250]: "8"
+          - generic [ref=e251]: "9"
+          - generic [ref=e252]: "0"
+          - generic [ref=e253]: "1"
+          - generic [ref=e254]: "2"
+          - generic [ref=e255]: "3"
+          - generic [ref=e256]: "4"
+          - generic [ref=e257]: "5"
+          - generic [ref=e258]: "6"
+          - generic [ref=e259]: "7"
+          - generic [ref=e260]: "8"
+          - generic [ref=e261]: "9"
+        - text: /5
+    - generic [ref=e265]:
+      - generic [ref=e266]:
+        - heading "Media & articles" [level=2] [ref=e267]:
+          - generic [aria-hidden] [ref=e790]: Media
+          - generic [aria-hidden] [ref=e792]: "&"
+          - generic [aria-hidden] [ref=e794]: articles
+        - generic [ref=e274]:
+          - button "Previous slide" [disabled] [ref=e275] [cursor=pointer]
+          - button "Next slide" [ref=e279] [cursor=pointer]
+      - list [ref=e284]:
+        - group "1 / 5" [ref=e285]:
+          - link "Autocoureur Nick Ho boekt eerste overwinning in Porsche Carrera Cup Benelux! \"Mega start\"" [ref=e286] [cursor=pointer]:
+            - /url: https://www.racexpress.nl/porsche-carrera-cup-benelux/autocoureur-nick-ho-boekt-eerste-overwinning-in-porsche-carrera-cup-benelux-mega-start/n/146956
+            - paragraph [ref=e289]: Autocoureur Nick Ho boekt eerste overwinning in Porsche Carrera Cup Benelux! "Mega start"
+        - group "2 / 5" [ref=e290]:
+          - link "Nick Ho pakt zege tijdens de Racing Day op Assen" [ref=e291] [cursor=pointer]:
+            - /url: https://www.autosport.nu/nieuws/benelux/nick-ho-pakt-zege-tijdens-de-racing-day-op-assen/
+            - paragraph [ref=e294]: Nick Ho pakt zege tijdens de Racing Day op Assen
+        - group "3 / 5" [ref=e295]:
+          - link "Autocoureur Nick Ho pakt knap podium in Porsche Carrera Cup Benelux" [ref=e296] [cursor=pointer]:
+            - /url: https://www.racexpress.nl/porsche-carrera-cup-benelux/autocoureur-nick-ho-pakt-knap-podium-in-porsche-carrera-cup-benelux/n/144905
+            - paragraph [ref=e299]: Autocoureur Nick Ho pakt knap podium in Porsche Carrera Cup Benelux
+        - group "4 / 5" [ref=e300]:
+          - link "Nick Ho combineert een carrière in de autosport met zijn studie Bedrijfskunde" [ref=e301] [cursor=pointer]:
+            - /url: https://www.erasmusmagazine.nl/2023/10/11/geen-alledaagse-combinatie-nick-ho-combineert-een-carriere-in-de-autosport-met-bedrijfskunde/
+            - paragraph [ref=e304]: Nick Ho combineert een carrière in de autosport met zijn studie Bedrijfskunde
+        - group "5 / 5" [ref=e305]:
+          - 'link "Kampioen Nick Ho (16) blikt terug op succesvol seizoen in GK4 Kart Series: \"Mijn eerste titel, super\"" [ref=e306] [cursor=pointer]':
+            - /url: https://www.racexpress.nl/gk4-kartseries/kampioen-nick-ho-16-blikt-terug-op-succesvol-seizoen-n-gk4-kart-series-mijn-eerste-titel-super/n/117978
+            - paragraph [ref=e309]: "Kampioen Nick Ho (16) blikt terug op succesvol seizoen in GK4 Kart Series: \"Mijn eerste titel, super\""
+    - generic [ref=e313]:
+      - heading "race calendar 2026" [level=2] [ref=e315]:
+        - generic [aria-hidden] [ref=e796]: race
+        - generic [aria-hidden] [ref=e798]: calendar
+        - generic [aria-hidden] [ref=e800]: "2026"
+      - list [ref=e324]:
+        - listitem [ref=e325]:
+          - generic [ref=e326]:
+            - generic [ref=e327]
+            - generic "20-21.02.2026" [ref=e344]
+        - listitem [ref=e347]:
+          - generic [ref=e348]:
+            - generic [ref=e349]
+            - generic "27-28.02.2026" [ref=e366]
+        - listitem [ref=e369]:
+          - generic [ref=e370]:
+            - generic [ref=e371]
+            - generic "17-19.04.2026" [ref=e386]
+        - listitem [ref=e389]:
+          - generic [ref=e390]:
+            - generic [ref=e391]
+            - generic "24-26.04.2026" [ref=e410]
+        - listitem [ref=e413]:
+          - generic [ref=e414]:
+            - generic [ref=e415]
+            - generic "15-17.05.2026" [ref=e432]
+        - listitem [ref=e435]:
+          - generic [ref=e436]:
+            - generic [ref=e437]
+            - generic "22-24.05.2026" [ref=e452]
+        - listitem [ref=e455]:
+          - generic [ref=e456]:
+            - generic [ref=e457]
+            - generic "19-21.06.2026" [ref=e472]
+        - listitem [ref=e475]:
+          - generic [ref=e476]:
+            - generic [ref=e477]
+            - generic "14-16.08.2026" [ref=e492]
+        - listitem [ref=e495]:
+          - generic [ref=e496]:
+            - generic [ref=e497]
+            - generic "21-23.08.2026" [ref=e512]
+        - listitem [ref=e515]:
+          - generic [ref=e516]:
+            - generic [ref=e517]
+            - generic "09-11.10.2026" [ref=e532]
+    - generic [ref=e618]:
+      - heading "Want to know more about the championships I compete in ?" [level=2] [ref=e619]:
+        - generic [aria-hidden] [ref=e952]: Want to know more about the
+        - generic [aria-hidden] [ref=e954]: championships I compete in ?
+      - generic "My Sponsorguide 2026 gives an indepth look at the series I race in, including the Porsche Carrrera Cup Deutschland and the Porsche Mobil 1 Supercup at Zandvoort" [ref=e624]:
+        - generic [aria-hidden] [ref=e956]: My Sponsorguide 2026 gives an indepth look at the series I race in, including the Porsche Carrrera
+        - generic [aria-hidden] [ref=e958]: Cup Deutschland and the Porsche Mobil 1 Supercup at Zandvoort
+      - link "Download sponsorguide 2026" [ref=e629] [cursor=pointer]:
+        - /url: https://cdn.prod.website-files.com/6a422333c15d8477da5a8443/6a7353eacfea04bb015bbdbe_sponsorguide-2026.pdf
+        - generic:
+          - generic:
+            - generic [aria-hidden]
+          - generic:
+            - generic [aria-hidden]
+    - generic [ref=e636] [cursor=pointer]
+    - generic [ref=e641]:
+      - generic [ref=e643]:
+        - generic:
+          - list:
+            - listitem
+            - listitem
+            - listitem
+            - listitem
+            - listitem
+            - listitem
+            - listitem
+            - listitem
+            - listitem
+            - listitem
+            - listitem
+            - listitem
+            - listitem
+            - listitem
+            - listitem
+      - generic [ref=e676]:
+        - generic [ref=e677] [cursor=pointer]
+        - generic [ref=e681] [cursor=pointer]
+    - generic [ref=e689]:
+      - generic [ref=e690]:
+        - heading "Contact" [level=2] [ref=e691]:
+          - generic [aria-hidden] [ref=e960]: Contact
+        - generic "Ready to support or just have questions ?" [ref=e694]:
+          - generic [aria-hidden] [ref=e962]: Ready to support or just have questions ?
+      - form "Email Form" [ref=e698]:
+        - generic "First Name" [ref=e700]:
+          - generic [aria-hidden] [ref=e964]: First Name
+        - generic "Last Name" [ref=e704]:
+          - generic [aria-hidden] [ref=e966]: Last Name
+        - generic "Email" [ref=e708]:
+          - generic [aria-hidden] [ref=e968]: Email
+        - generic "Message" [ref=e712]:
+          - generic [aria-hidden] [ref=e970]: Message
+        - link "Submit" [ref=e716] [cursor=pointer]:
+          - /url: "#"
+          - generic:
+            - generic
+            - generic
+    - generic [ref=e721]:
+      - generic [ref=e722]:
+        - link [ref=e723] [cursor=pointer]:
+          - /url: /#hero
+        - generic [ref=e724]:
+          - generic [ref=e725]: Menu
+          - generic [ref=e726]:
+            - link "About" [ref=e727] [cursor=pointer]:
+              - /url: /#about
+            - link "History" [ref=e729] [cursor=pointer]:
+              - /url: /#history
+            - link "Calendar" [ref=e731] [cursor=pointer]:
+              - /url: /#calendar
+            - link "Gallery" [ref=e733] [cursor=pointer]:
+              - /url: /#gallery
+            - link "Contact" [ref=e735] [cursor=pointer]:
+              - /url: /#contact
+        - generic [ref=e737]:
+          - generic [ref=e738]: Socials
+          - generic [ref=e739]:
+            - link "Instagram" [ref=e740] [cursor=pointer]:
+              - /url: https://www.instagram.com/nickho_98
+            - link "LinkedIn" [ref=e742] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/nick-ho-042054327/
+        - generic [ref=e744]:
+          - generic [ref=e745]: Contact
+          - generic [ref=e746]:
+            - link "+31 6 83 63 09 88" [ref=e747] [cursor=pointer]:
+              - /url: tel:+31683630988
+            - link "nick@nickho-motorsports.nl" [ref=e749] [cursor=pointer]:
+              - /url: mailto:nick@nickho-motorsports.nl
+      - generic [ref=e751]:
+        - link "Web Credits" [ref=e754] [cursor=pointer]:
+          - /url: https://www.weareboring.nl
+          - generic:
+            - generic
+            - generic
+        - link "Disclaimer & Privacy Policy" [ref=e756] [cursor=pointer]:
+          - /url: /disclaimer-privacy-policy
+          - generic:
+            - generic
+            - generic
