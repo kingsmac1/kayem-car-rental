@@ -55,7 +55,7 @@ export function Stat({ label, value, sub, tone }: { label: string; value: ReactN
   return (
     <div className="border border-line bg-ink-2 p-4">
       <p className="text-xs font-semibold text-mute">{label}</p>
-      <p className={cn('num mt-2 text-2xl font-medium tracking-tight', tone === 'bad' && 'text-bad', tone === 'warn' && 'text-warn', tone === 'accent' && 'text-accent', tone === 'ok' && 'text-ok')}>{value}</p>
+      <p className={cn('num mt-2 text-[19px] font-medium tracking-tight sm:text-2xl', tone === 'bad' && 'text-bad', tone === 'warn' && 'text-warn', tone === 'accent' && 'text-accent', tone === 'ok' && 'text-ok')}>{value}</p>
       {sub ? <p className="mt-1 text-xs text-mute">{sub}</p> : null}
     </div>
   )

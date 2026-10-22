@@ -101,6 +101,10 @@ export default function Book() {
       // Find or create the customer record (only results are stored, never the NIN/selfie).
       const s = db.get()
       let customer = s.customers.find((c) => c.email.toLowerCase() === draft.email.toLowerCase() || c.phone.replace(/\s/g, '') === draft.phone.replace(/\s/g, ''))
+      if (customer?.blacklist) {
+        toast.error(`We can’t complete this booking online. Please call ${brand.contact.phoneDisplay} — you haven’t been charged.`)
+        return
+      }
       const verification = draft.skipVerification ? 'verified' : [draft.nin, draft.licence, draft.selfie].includes('review') ? 'review' : 'verified'
       if (!customer) {
         customer = {

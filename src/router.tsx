@@ -96,7 +96,15 @@ const admin = createRoute({ getParentRoute: () => rootRoute, path: '/admin', com
 const a = <P extends string>(path: P, loader: () => Promise<{ default: React.ComponentType }>) => createRoute({ getParentRoute: () => admin, path, component: page(loader) })
 const adminRoutes = [
   a('/', () => import('@/pages/admin/Overview')),
-  a('/bookings', () => import('@/pages/admin/Bookings')),
+  createRoute({
+    getParentRoute: () => admin,
+    path: '/bookings',
+    validateSearch: (q: Record<string, unknown>): { new?: string; id?: string } => ({
+      new: typeof q.new === 'string' ? q.new : undefined,
+      id: typeof q.id === 'string' ? q.id : undefined,
+    }),
+    component: page(() => import('@/pages/admin/Bookings')),
+  }),
   a('/fleet', () => import('@/pages/admin/Fleet')),
   a('/command', () => import('@/pages/admin/Command')),
   a('/inspections', () => import('@/pages/admin/Inspections')),
