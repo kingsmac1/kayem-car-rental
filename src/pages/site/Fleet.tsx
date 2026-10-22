@@ -162,6 +162,7 @@ export default function Fleet() {
               Filters
             </Button>
           </div>
+          <h2 className="sr-only">Cars</h2>
           {results.length ? (
             <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
               {results.map(({ car, free }, i) => (

@@ -174,7 +174,6 @@ export default function ConciergeWidget() {
           className="relative grid size-14 place-items-center rounded-full bg-[#25d366] text-white shadow-[0_12px_32px_-8px_rgba(37,211,102,.55)]"
         >
           {open ? <X className="size-6" /> : <WhatsAppGlyph className="size-7" />}
-          {!open && <span className="absolute -right-0.5 -top-0.5 grid size-5 place-items-center rounded-full bg-bad text-[11px] font-bold text-white">1</span>}
         </motion.button>
       </div>
 

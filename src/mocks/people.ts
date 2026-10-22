@@ -1,3 +1,4 @@
+import { brand } from '@/config/brand'
 import type { City } from '@/config/brand'
 
 export const customerSeeds: { name: string; city: City }[] = [
@@ -72,12 +73,14 @@ export const partnerSeeds = [
   { id: 'p-fatima', name: 'Fatima Lawan', city: 'Abuja', commission: 0.25, status: 'pending' },
 ] as const
 
+const staffEmail = (u: string) => `${u}@${brand.slug}.demo`
+
 export const staffSeeds = [
-  { id: 's-owner', name: 'Emeka Okafor', role: 'Owner', email: 'owner@emkay.demo' },
-  { id: 's-manager', name: 'Bisola Adekunle', role: 'Manager', email: 'bisola@emkay.demo' },
-  { id: 's-desk', name: 'Grace Udoh', role: 'Front Desk', email: 'grace@emkay.demo' },
-  { id: 's-desk2', name: 'Aminu Bala', role: 'Front Desk', email: 'aminu@emkay.demo' },
-  { id: 's-fleet', name: 'Joseph Eze', role: 'Fleet Officer', email: 'joseph@emkay.demo' },
+  { id: 's-owner', name: 'Emeka Okafor', role: 'Owner', email: staffEmail('owner') },
+  { id: 's-manager', name: 'Bisola Adekunle', role: 'Manager', email: staffEmail('bisola') },
+  { id: 's-desk', name: 'Grace Udoh', role: 'Front Desk', email: staffEmail('grace') },
+  { id: 's-desk2', name: 'Aminu Bala', role: 'Front Desk', email: staffEmail('aminu') },
+  { id: 's-fleet', name: 'Joseph Eze', role: 'Fleet Officer', email: staffEmail('joseph') },
 ] as const
 
 export const reviewTexts = [

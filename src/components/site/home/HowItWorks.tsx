@@ -86,7 +86,7 @@ export function HowItWorks() {
       ) : (
         <div className="container-x py-24">
           <h2 id="how-title" className="display text-[clamp(30px,8vw,48px)] font-extrabold uppercase tracking-[-0.03em]">How {brand.shortName} works</h2>
-          <ol className="mt-10 flex flex-col gap-12">
+          <ol className="mt-10 grid gap-12 md:grid-cols-3 md:gap-8">
             {chapters.map((ch) => (
               <li key={ch.n}>
                 <div className="relative aspect-[4/3] overflow-hidden">

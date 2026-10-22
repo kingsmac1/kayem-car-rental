@@ -53,7 +53,7 @@ export function Td({ children, className }: { children?: ReactNode; className?: 
 }
 export function TableWrap({ children }: { children: ReactNode }) {
   return (
-    <div className="overflow-x-auto border border-line bg-ink-2">
+    <div className="min-w-0 overflow-x-auto border border-line bg-ink-2">
       <table className="w-full min-w-[720px] border-collapse">{children}</table>
     </div>
   )

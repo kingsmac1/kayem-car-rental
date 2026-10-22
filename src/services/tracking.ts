@@ -1,3 +1,4 @@
+import { brand } from '@/config/brand'
 /**
  * GPS tracking — live positions, trips, alerts and the remote immobiliser.
  * TODO: connect real provider — read positions from a Traccar server
@@ -180,6 +181,6 @@ export const trackingService = {
   isImmobilised: (carId: string) => immobilised.has(carId),
 
   shareLink(carId: string) {
-    return `https://track.emkay.demo/share/${carId}-${Math.random().toString(36).slice(2, 8)}`
+    return `https://track.${brand.slug}.demo/share/${carId}-${Math.random().toString(36).slice(2, 8)}`
   },
 }

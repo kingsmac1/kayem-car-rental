@@ -28,8 +28,7 @@ export function Services() {
                 <img src={sm(s.image)} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover opacity-55 grayscale transition-[transform,opacity,filter] duration-700 [transition-timing-function:var(--ease-out-expo)] group-hover:scale-105 group-hover:opacity-80 group-hover:grayscale-0 group-focus-visible:opacity-80" />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" />
                 <div className="relative flex h-full flex-col justify-between p-5 md:p-6">
-                  <div className="flex items-start justify-between">
-                    <span className="num text-[13px] text-paper/60">{String(i + 1).padStart(2, '0')}</span>
+                  <div className="flex items-start justify-end">
                     <span className="grid size-10 place-items-center bg-accent text-accent-ink transition-transform duration-500 [transition-timing-function:var(--ease-out-expo)] group-hover:rotate-45">
                       <ArrowUpRight className="size-4" />
                     </span>

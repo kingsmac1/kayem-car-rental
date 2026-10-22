@@ -1,3 +1,4 @@
+import { brand } from '@/config/brand'
 /**
  * Payments — rental charge plus refundable deposit.
  * TODO: connect real provider — initialise transactions with Paystack
@@ -30,7 +31,7 @@ export const paymentService = {
       deposit,
       method,
       status: 'pending',
-      transferAccount: method === 'transfer' ? { bank: 'Wema Bank (demo)', number: `78${String(Date.now()).slice(-8)}`, name: 'Emkay Checkout', expiresInMin: 30 } : undefined,
+      transferAccount: method === 'transfer' ? { bank: 'Wema Bank (demo)', number: `78${String(Date.now()).slice(-8)}`, name: `${brand.shortName} Checkout`, expiresInMin: 30 } : undefined,
       ussdCode: method === 'ussd' ? `*737*000*${String(amount + deposit).slice(0, 6)}#` : undefined,
     }
   },

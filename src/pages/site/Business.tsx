@@ -49,10 +49,9 @@ export default function Business() {
       <PageHeader title="Cars for your whole team" intro="Companies, embassies, hotels and event planners use us to move guests and staff safely, with one invoice at the end of the month." />
       <section className="container-x py-20">
         <RevealGroup className="grid gap-px bg-line sm:grid-cols-2 lg:grid-cols-3">
-          {benefits.map((b, i) => (
+          {benefits.map((b) => (
             <div key={b.title} className="bg-ink p-6 md:p-8">
-              <span className="num text-[13px] text-accent">{String(i + 1).padStart(2, '0')}</span>
-              <h2 className="display mt-4 text-[22px] font-bold uppercase tracking-[-0.02em]">{b.title}</h2>
+              <h2 className="display text-[22px] font-bold uppercase tracking-[-0.02em]">{b.title}</h2>
               <p className="mt-3 text-[15px] leading-relaxed text-paper/75">{b.body}</p>
             </div>
           ))}

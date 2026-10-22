@@ -38,7 +38,6 @@ export function CarCard({ car, available = true, className, search, eager, dragg
           my.set(0)
         }}
         className="block"
-        aria-label={`${carName(car)}, ${naira(car.rates.daily)} per day in ${car.city}`}
       >
         <div className="relative aspect-[4/3] overflow-hidden bg-ink-3">
           <img

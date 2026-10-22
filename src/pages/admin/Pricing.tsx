@@ -57,7 +57,7 @@ export default function Pricing() {
     <div>
       <AdminTitle title="Pricing rules" sub="Rules stack: base rate → season → weekend → same-day → long-stay → corporate / promo." />
       <div className="grid gap-6 xl:grid-cols-[1.4fr_1fr]">
-        <div className="flex flex-col gap-6">
+        <div className="flex min-w-0 flex-col gap-6">
           <Panel title="Season & event rules">
             <ul>
               {r.seasons.map((x, i) => (
@@ -99,7 +99,7 @@ export default function Pricing() {
             </TableWrap>
           </Panel>
         </div>
-        <div className="flex flex-col gap-6">
+        <div className="flex min-w-0 flex-col gap-6">
           <Panel title={<span className="flex items-center gap-2"><Lightbulb className="size-4 text-accent" />Smart suggestions</span>}>
             {suggestions.length ? (
               <ul className="flex flex-col gap-3">

@@ -9,7 +9,7 @@ import { GridLines } from '../Reveal'
 const WORDS = 'We check every driver, track every car and photograph every handover, so the only thing you think about is the road ahead.'
 const HIGHLIGHT = new Set(['check', 'every', 'driver,', 'track', 'car', 'photograph', 'handover,', 'road', 'ahead.'])
 
-/** "Why Emkay": scrubbed manifesto (words fill in as you scroll) + the four promises. */
+/** "Why <brand>": scrubbed manifesto (words fill in as you scroll) + the four promises. */
 export function Manifesto() {
   const root = useRef<HTMLElement>(null)
 
@@ -45,18 +45,15 @@ export function Manifesto() {
           ))}
         </p>
 
-        <ol className="mt-24 grid border-t border-ink/15 md:mt-32 md:grid-cols-2">
+        <ul className="mt-24 grid border-t border-ink/15 md:mt-32 md:grid-cols-2">
           {pillars.map((p, i) => (
             <li key={p.title} className={`grid gap-4 border-b border-ink/15 py-8 md:py-10 ${i % 2 === 0 ? 'md:border-r md:pr-10' : 'md:pl-10'}`}>
-              <div className="flex items-baseline justify-between gap-4">
-                <h3 className="display text-[clamp(22px,2.4vw,32px)] font-bold tracking-[-0.02em]">{p.title}</h3>
-                <span className="num shrink-0 text-[13px] text-ink/50">0{i + 1}</span>
-              </div>
+              <h3 className="display text-[clamp(22px,2.4vw,32px)] font-bold tracking-[-0.02em]">{p.title}</h3>
               <p className="max-w-[46ch] text-[16px] leading-relaxed text-ink/75">{p.body}</p>
               <p className="label w-fit bg-ink px-2.5 py-1.5 text-accent">{p.detail}</p>
             </li>
           ))}
-        </ol>
+        </ul>
       </div>
     </section>
   )

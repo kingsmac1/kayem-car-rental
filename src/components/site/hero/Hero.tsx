@@ -156,7 +156,7 @@ export function Hero() {
       <div className="container-x relative flex flex-1 flex-col pt-28 pb-6 md:pb-8">
         {/* Number board */}
         <div className="flex flex-1 items-start justify-between gap-6 md:items-center">
-          <dl className="grid grid-cols-2 gap-x-8 gap-y-5 md:flex md:flex-col md:gap-6" aria-label="Emkay in numbers">
+          <dl className="grid grid-cols-2 gap-x-8 gap-y-5 md:flex md:flex-col md:gap-6" aria-label={`${brand.shortName} in numbers`}>
             {brand.stats.map((s, i) => (
               <div key={s.label} className="flex flex-col-reverse">
                 <dt className="label mt-1 text-paper/70">{s.label}</dt>

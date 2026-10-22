@@ -1,3 +1,4 @@
+import { brand } from '@/config/brand'
 import { Link } from '@tanstack/react-router'
 import { CheckCircle2, CreditCard, Headphones, MapPin } from 'lucide-react'
 import { sm } from '@/data/images'
@@ -61,7 +62,7 @@ export function ChatCardView({ card, onPick, onPay }: { card: ChatCard; onPick: 
           <span className="grid size-10 shrink-0 place-items-center rounded bg-[#0b9a5b]"><CreditCard className="size-5 text-white" /></span>
           <div className="min-w-0 text-[12.5px]">
             <p className="font-semibold text-[#e9edef]">Secure payment · {card.ref}</p>
-            <p className="truncate text-[#53bdeb]">pay.emkay.demo/{card.ref}</p>
+            <p className="truncate text-[#53bdeb]">pay.{brand.slug}.demo/{card.ref}</p>
           </div>
         </div>
         <button type="button" onClick={() => onPay(card.ref, card.amount)} className="w-full border-t border-white/5 py-2.5 text-[13px] font-semibold text-[#53bdeb] hover:bg-white/5">

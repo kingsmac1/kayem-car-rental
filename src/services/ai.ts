@@ -265,7 +265,7 @@ export const aiService = {
     // 2. Extend an active rental.
     if (d.extend) {
       const active = s.bookings.filter((b) => b.customerId === ctx.customerId && b.status === 'active').sort((a, b) => +new Date(a.end) - +new Date(b.end))[0]
-      if (!active) return { ctx, messages: [{ text: 'I can’t find an active rental on this number. Send your booking reference (e.g. EMK-4123) and I’ll check.' }], chips: DEFAULT_CHIPS }
+      if (!active) return { ctx, messages: [{ text: `I can’t find an active rental on this number. Send your booking reference (e.g. ${brand.refPrefix}-4123) and I’ll check.` }], chips: DEFAULT_CHIPS }
       const car = s.cars.find((c) => c.id === active.carId)!
       const n = Number(text.match(/(\d+)\s*(more )?days?/)?.[1] ?? 1)
       const clash = overlaps(s, car.id, new Date(active.end), addDays(active.end, n), active.id)

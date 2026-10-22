@@ -140,9 +140,9 @@ export function StepTrip({ draft, set, next, state, car }: StepProps) {
       <div className="mt-10">
         <p className="label text-mute">Car</p>
         {touched && errors.car ? <p role="alert" className="mt-2 text-[13px] text-bad">{errors.car}</p> : null}
-        <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+        <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
           {candidates.map(({ c, free }) => (
-            <li key={c.id}>
+            <li key={c.id} className="min-w-0">
               <button
                 type="button"
                 disabled={!free}

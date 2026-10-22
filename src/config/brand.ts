@@ -16,6 +16,10 @@ export const brand = {
   logoText: 'EMKAY',
   /** Single letter used in the favicon and the loader. */
   monogram: 'E',
+  /** Short lowercase handle for demo domains (pay.<slug>.demo) and emails. */
+  slug: 'emkay',
+  /** Booking reference prefix, e.g. EMK-4123. */
+  refPrefix: 'EMK',
   tagline: 'Premium cars. Zero hassle.',
   description:
     'Self-drive and chauffeur car hire in Lagos, Abuja and Port Harcourt. Verified customers, tracked cars, transparent deposits and 24/7 WhatsApp booking.',

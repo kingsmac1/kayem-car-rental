@@ -4,6 +4,7 @@ import { gsap, ScrollTrigger } from '@/lib/gsap'
 import { lockScroll } from '@/lib/smooth'
 import { cn } from '@/lib/utils'
 import { RollText } from '@/components/ui/button'
+import { brand } from '@/config/brand'
 import { Logo } from './Logo'
 import { MenuOverlay } from './MenuOverlay'
 import { Magnetic } from './Magnetic'
@@ -44,7 +45,7 @@ export function Header() {
     <>
       <header ref={ref} className="fixed inset-x-0 top-0 z-[75]">
         <div className="container-x flex h-[72px] items-center justify-between gap-4">
-          <Link to="/" className="relative z-[76]" aria-label="Home">
+          <Link to="/" className="relative z-[76]" aria-label={`${brand.name} home`}>
             <Logo className={cn('transition-colors', open && 'text-accent-ink [&>span:first-child]:bg-accent-ink [&>span:first-child]:text-accent')} />
           </Link>
           <nav aria-label="Primary" className={cn('hidden items-center gap-8 lg:flex', open && 'invisible')}>

@@ -1,3 +1,4 @@
+import { brand } from '@/config/brand'
 import { createRng } from '@/lib/seed'
 import { DAY, startOfDay } from '@/lib/utils'
 import { buildCars, carName } from './cars'
@@ -124,7 +125,7 @@ export function generateDemoState(now = new Date()): DemoState {
           : []
       bookings.push({
         id,
-        ref: `EMK-${refN++}`,
+        ref: `${brand.refPrefix}-${refN++}`,
         carId: car.id,
         customerId: customer.id,
         start: at(start, rng.pick([7, 8, 9, 10, 12, 14, 16])),
@@ -151,19 +152,19 @@ export function generateDemoState(now = new Date()): DemoState {
   // Guarantee demo moments: one overdue rental, one due back today, one pickup today.
   const overdueCar = cars.find((c) => c.id === 'accord-abj')!
   bookings.push({
-    id: 'b-overdue', ref: `EMK-${refN++}`, carId: overdueCar.id, customerId: 'c-23', start: at(-5, 9), end: at(-1, 18),
+    id: 'b-overdue', ref: `${brand.refPrefix}-${refN++}`, carId: overdueCar.id, customerId: 'c-23', start: at(-5, 9), end: at(-1, 18),
     pickup: 'abv-intl', dropoff: 'abj-wuse', mode: 'self-drive', extras: [], status: 'active', total: overdueCar.rates.daily * 4,
     paid: overdueCar.rates.daily * 4, deposit: overdueCar.deposit, depositStatus: 'held', deductions: [], channel: 'whatsapp', createdAt: at(-7, 13),
   })
   const dueTodayCar = cars.find((c) => c.id === 'camry-lag')!
   bookings.push({
-    id: 'b-duetoday', ref: `EMK-${refN++}`, carId: dueTodayCar.id, customerId: 'c-1', start: at(-3, 10), end: at(0, 17),
+    id: 'b-duetoday', ref: `${brand.refPrefix}-${refN++}`, carId: dueTodayCar.id, customerId: 'c-1', start: at(-3, 10), end: at(0, 17),
     pickup: 'los-mma2', dropoff: 'los-mma2', mode: 'self-drive', extras: ['Child seat'], status: 'active', total: dueTodayCar.rates.daily * 3 + 30000,
     paid: dueTodayCar.rates.daily * 3 + 30000, deposit: dueTodayCar.deposit, depositStatus: 'held', deductions: [], channel: 'website', createdAt: at(-6, 11),
   })
   const pickupTodayCar = cars.find((c) => c.id === 'rr-lag')!
   bookings.push({
-    id: 'b-pickuptoday', ref: `EMK-${refN++}`, carId: pickupTodayCar.id, customerId: 'c-5', start: at(0, 15), end: at(2, 15),
+    id: 'b-pickuptoday', ref: `${brand.refPrefix}-${refN++}`, carId: pickupTodayCar.id, customerId: 'c-5', start: at(0, 15), end: at(2, 15),
     pickup: 'lag-vi', dropoff: 'lag-vi', mode: 'chauffeur', chauffeurId: 'd-1', extras: ['Security escort'], status: 'confirmed',
     total: pickupTodayCar.rates.daily * 2 + 50000 + 20000, paid: pickupTodayCar.rates.daily * 2 + 70000, deposit: pickupTodayCar.deposit, depositStatus: 'held', deductions: [], channel: 'whatsapp', createdAt: at(-2, 20),
   })
@@ -258,15 +259,15 @@ export function generateDemoState(now = new Date()): DemoState {
     conv('w-3', 'Gold Ribbon Events', 99, 'human', 'Wedding convoy', 34, [
       ['customer', 'We need 4 black SUVs + 1 Escalade for a wedding on the 14th, Ikoyi'],
       ['bot', 'Lovely! I can quote that now — 4× Lexus/Mercedes SUVs and the Escalade with chauffeurs. Shall I pass this to our events desk for a package price?'],
-      ['agent', 'Hi Tolu, Grace here from Emkay. Sending a package quote with ribbons and coordinator in 10 mins.'],
+      ['agent', `Hi Tolu, Grace here from ${brand.shortName}. Sending a package quote with ribbons and coordinator in 10 mins.`],
     ]),
     conv('w-4', 'Halima Abubakar', 19, 'bot', 'Extension', 58, [
       ['customer', 'Can I extend the Camry by 2 more days?'],
-      ['bot', 'Done ✅ The Camry is free. 2 extra days = ₦110,000. Here is your payment link: pay.emkay.demo/EMK-4192'],
+      ['bot', `Done ✅ The Camry is free. 2 extra days = ₦110,000. Here is your payment link: pay.${brand.slug}.demo/${brand.refPrefix}-4192`],
     ]),
     conv('w-5', 'Tamunotonye Briggs', 20, 'closed', 'Airport pickup', 190, [
       ['customer', 'Landing PHC 4pm tomorrow, need a car'],
-      ['bot', 'Booked ✅ Range Rover Sport, PHC airport arrivals at 4pm. Ref EMK-4177.'],
+      ['bot', `Booked ✅ Range Rover Sport, PHC airport arrivals at 4pm. Ref ${brand.refPrefix}-4177.`],
       ['customer', 'Thanks!'],
     ]),
     conv('w-6', 'Unknown +234 905…', 33, 'needs-human', 'Price negotiation', 15, [
@@ -302,9 +303,9 @@ export function generateDemoState(now = new Date()): DemoState {
   // ---- staff, audit, alerts
   const staff: Staff[] = staffSeeds.map((s) => ({ ...s, active: true }))
   const actions = [
-    'Confirmed booking EMK-4123', 'Refunded deposit for EMK-4108', 'Blocked Toyota Coaster — service overdue', 'Added note to Chiamaka Okonkwo',
-    'Changed festive season uplift to 30%', 'Created promo code DETTYDEC', 'Assigned Sunday Okeke to EMK-4131', 'Approved partner Adaeze Nwachukwu',
-    'Exported finance CSV', 'Marked inspection complete for Prado TXL', 'Blacklisted Sodiq Lawal', 'Extended EMK-4155 by 2 days',
+    `Confirmed booking ${brand.refPrefix}-4123`, `Refunded deposit for ${brand.refPrefix}-4108`, 'Blocked Toyota Coaster — service overdue', 'Added note to Chiamaka Okonkwo',
+    'Changed festive season uplift to 30%', 'Created promo code DETTYDEC', `Assigned Sunday Okeke to ${brand.refPrefix}-4131`, 'Approved partner Adaeze Nwachukwu',
+    'Exported finance CSV', 'Marked inspection complete for Prado TXL', 'Blacklisted Sodiq Lawal', `Extended ${brand.refPrefix}-4155 by 2 days`,
   ]
   const audit: AuditEntry[] = actions.map((a, i) => {
     const s = staff[i % staff.length]

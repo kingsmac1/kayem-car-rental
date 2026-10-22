@@ -54,7 +54,7 @@ export default function Analyst() {
     <div>
       <AdminTitle title="AI business analyst" sub="Ask about your business in plain English. Every answer is calculated from your live data." />
       <div className="grid gap-6 xl:grid-cols-[1.6fr_1fr]">
-        <section className="flex min-h-[560px] flex-col border border-line bg-ink-2" aria-label="Analyst chat">
+        <section className="flex min-h-[560px] min-w-0 flex-col border border-line bg-ink-2" aria-label="Analyst chat">
           <div className="flex-1 overflow-y-auto p-4" data-lenis-prevent>
             {!turns.length && (
               <div className="py-8 text-center">

@@ -69,7 +69,7 @@ export default function Inspections() {
     return (
       <li className="flex flex-wrap items-center gap-3 border-b border-line py-3 last:border-0">
         <img src={car.image.replace('.webp', '-sm.webp')} alt="" className="aspect-[4/3] w-16 object-cover" />
-        <div className="min-w-0 flex-1 text-[13.5px]">
+        <div className="min-w-0 flex-1 basis-40 text-[13.5px]">
           <p className="font-semibold">{carName(car)} <span className="num font-normal text-mute">{b.ref}</span></p>
           <p className="text-[12.5px] text-mute">{custOf(b.customerId)?.name} · {kind === 'check-out' ? `pick-up ${fmtDay(b.start)} ${fmtTime(b.start)}` : `due ${fmtDay(b.end)} ${fmtTime(b.end)}`}</p>
         </div>

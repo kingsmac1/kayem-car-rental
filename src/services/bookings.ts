@@ -1,3 +1,4 @@
+import { brand } from '@/config/brand'
 /**
  * Bookings service — create, list, update, cancel and extend.
  * TODO: connect real provider — swap `db` for Supabase (`bookings` table) and run
@@ -20,7 +21,7 @@ export const STATUS_FLOW: BookingStatus[] = ['pending', 'confirmed', 'active', '
 
 function nextRef() {
   const nums = db.get().bookings.map((b) => Number(b.ref.split('-')[1]) || 0)
-  return `EMK-${Math.max(4100, ...nums) + 1}`
+  return `${brand.refPrefix}-${Math.max(4100, ...nums) + 1}`
 }
 
 export type NewBooking = Omit<Booking, 'id' | 'ref' | 'createdAt' | 'deductions' | 'depositStatus'> & { depositStatus?: Booking['depositStatus'] }

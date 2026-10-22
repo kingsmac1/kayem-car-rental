@@ -10,10 +10,10 @@
 7. [x] M7 — Admin: chauffeurs, pricing, finance, AI analyst, inbox, corporate, partners, marketing, settings
 8. [x] M8 — Driver app, corporate portal, partner portal, demo switcher
 9. [x] M9 — supabase/schema.sql, .env.example, README.md
-10. [ ] M10 — Final polish, audits, full playwright pass, Lighthouse, build
+10. [x] M10 — Final polish, audits, full playwright pass, Lighthouse, build
 
 ## Status
-M1–M9 done. Next: M10 final polish (impeccable audit/polish, slop audit, originality audit, full playwright pass, Lighthouse, build).
+All 10 milestones done. Audit results in AUDIT.md. Possible follow-ups: verify Lighthouse on modern hardware / PageSpeed after deploy; replace placeholder photos, logos, testimonials per client; connect real services (see README §5).
 
 ## Key decisions
 - Vite 8 + React 19 + TS 6, TanStack Router (code-based routes in src/router.tsx, every page lazy-loaded).
@@ -30,10 +30,13 @@ M1–M9 done. Next: M10 final polish (impeccable audit/polish, slop audit, origi
 - `react-is` installed explicitly (Recharts peer, skipped by legacy-peer-deps).
 - Map tiles: CARTO dark now needs an API key (returns 'API KEY REQUIRED' tiles), so maps use Esri Dark Gray Canvas (free, attributed). Configurable in src/config/map.ts.
 - Perf work (M10): static HTML hero shell in index.html, modulepreload for home chunks (vite plugin), async Google Fonts, below-fold home sections + footer mount on first scroll (src/components/site/Deferred.tsx), concierge/demo switcher mount after idle, static grain on touch, marquee mask removed. Three.js chunk (~240KB gz) only loads on desktop after idle.
+- Brand strings: brand.ts also holds `slug` (demo domains/emails) and `refPrefix` (booking refs). Nothing brand-specific is hard-coded elsewhere in src.
+- Drei no longer used (texture via fiber useLoader); package still installed.
 - Public-site routes used: /business (corporate page) and /earn (partner owners page) because /corporate and /partner are the portals.
 
 ## Known issues
-- Lighthouse mobile (home) on this 2014 dual-core MacBook (Lighthouse benchmarkIndex 260–700, WindowServer ~100% CPU): Performance 36–53 with default 4x CPU throttle, up to 72 with a calibrated 1.5x multiplier; Accessibility 100, Best practices 100, SEO 100 after robots.txt. Target 80+ not verified on this hardware — re-run on a modern machine or PageSpeed Insights after deploy.
+- Lighthouse SEO now 100 (robots.txt + sitemap).
+- Lighthouse mobile (home) on this 2014 dual-core MacBook (Lighthouse benchmarkIndex 260–700, WindowServer ~100% CPU): Performance 36–53 with default 4x CPU throttle, up to 72 with a calibrated 1.5x multiplier; Accessibility 100, Best practices 100. Target 80+ not verified on this hardware — re-run on a modern machine or PageSpeed Insights after deploy.
 - Chrome now returns a Promise from scrollIntoView/scrollTo: never use expression-bodied useEffect with those (React treats the Promise as a cleanup → 'destroy is not a function').
 - `npx tsc -b` takes ~3 min on this machine while the dev server + browser run; it does pass.
 - Hero "Sound on" plays a synthesised engine hum (src/components/site/hero/engineHum.ts) because the placeholder Mixkit clip is silent.
