@@ -6,14 +6,14 @@
 3. [x] M3 — WhatsApp AI concierge simulator
 4. [x] M4 — Admin: overview, bookings, fleet, customers
 5. [x] M5 — Admin: Fleet Command Center
-6. [ ] M6 — Admin: inspections, maintenance & documents
+6. [x] M6 — Admin: inspections, maintenance & documents
 7. [ ] M7 — Admin: chauffeurs, pricing, finance, AI analyst, inbox, corporate, partners, marketing, settings
 8. [ ] M8 — Driver app, corporate portal, partner portal, demo switcher
 9. [ ] M9 — supabase/schema.sql, .env.example, README.md
 10. [ ] M10 — Final polish, audits, full playwright pass, Lighthouse, build
 
 ## Status
-M1–M5 done. Next: M6 inspections (AI damage compare) + maintenance & documents.
+M1–M6 done. Next: M7 admin chauffeurs, pricing, finance, AI analyst, WhatsApp inbox, corporate, partners, marketing, settings.
 
 ## Key decisions
 - Vite 8 + React 19 + TS 6, TanStack Router (code-based routes in src/router.tsx, every page lazy-loaded).

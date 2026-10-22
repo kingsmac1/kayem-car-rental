@@ -34,7 +34,7 @@ export function SearchBox({ value, onChange, placeholder }: { value: string; onC
   )
 }
 
-export function Th({ children, sort, dir, onSort, className }: { children: ReactNode; sort?: boolean; dir?: 'asc' | 'desc'; onSort?: () => void; className?: string }) {
+export function Th({ children, sort, dir, onSort, className }: { children?: ReactNode; sort?: boolean; dir?: 'asc' | 'desc'; onSort?: () => void; className?: string }) {
   return (
     <th scope="col" className={cn('whitespace-nowrap border-b border-line px-3 py-2.5 text-left text-xs font-semibold text-mute', className)} aria-sort={sort ? (dir === 'asc' ? 'ascending' : 'descending') : undefined}>
       {onSort ? (
