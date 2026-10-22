@@ -209,9 +209,17 @@ export const aiService = {
 
     // Update context from anything we can parse.
     const city = CITY_WORDS.find(([re]) => re.test(text))?.[1]
-    if (city) ctx.city = city
     const cat = CATEGORY_WORDS.find(([re]) => re.test(text))?.[1]
+    const mentionsModel = MODEL_WORDS.some(([re]) => re.test(text))
+    const chosen = ctx.carId ? s.cars.find((c) => c.id === ctx.carId) : undefined
+    if (chosen && (mentionsModel || cat || (city && city !== chosen.city))) {
+      // A new request: forget the previous pick and start a fresh search.
+      ctx.carId = undefined
+      if (ctx.stage === 'quoted' || ctx.stage === 'choosing') ctx.stage = 'idle'
+    }
+    if (city) ctx.city = city
     if (cat) ctx.category = cat
+    if (mentionsModel) ctx.category = undefined
     const dates = parseDates(text)
     if (dates) {
       ctx.start = dates.start.toISOString()
@@ -224,7 +232,7 @@ export const aiService = {
     // 1. Emergencies first.
     if (d.breakdown) {
       ctx.stage = 'breakdown'
-      const active = s.bookings.find((b) => b.customerId === ctx.customerId && b.status === 'active')
+      const active = s.bookings.filter((b) => b.customerId === ctx.customerId && b.status === 'active').sort((a, b) => +new Date(a.end) - +new Date(b.end))[0]
       const car = active ? s.cars.find((c) => c.id === active.carId) : undefined
       return {
         ctx,
@@ -255,7 +263,7 @@ export const aiService = {
 
     // 2. Extend an active rental.
     if (d.extend) {
-      const active = s.bookings.find((b) => b.customerId === ctx.customerId && b.status === 'active') ?? s.bookings.find((b) => b.status === 'active')
+      const active = s.bookings.filter((b) => b.customerId === ctx.customerId && b.status === 'active').sort((a, b) => +new Date(a.end) - +new Date(b.end))[0]
       if (!active) return { ctx, messages: [{ text: 'I can’t find an active rental on this number. Send your booking reference (e.g. EMK-4123) and I’ll check.' }], chips: DEFAULT_CHIPS }
       const car = s.cars.find((c) => c.id === active.carId)!
       const n = Number(text.match(/(\d+)\s*(more )?days?/)?.[1] ?? 1)

@@ -3,7 +3,7 @@
 ## Build plan
 1. [x] M1 — Reference study (MOTION-SPEC.md), impeccable init (PRODUCT.md, DESIGN.md), Vite+React+TS+TanStack Router setup, brand config, design system, mock data, service layer
 2. [x] M2 — Customer website + booking flow + verification
-3. [ ] M3 — WhatsApp AI concierge simulator
+3. [x] M3 — WhatsApp AI concierge simulator
 4. [ ] M4 — Admin: overview, bookings, fleet, customers
 5. [ ] M5 — Admin: Fleet Command Center
 6. [ ] M6 — Admin: inspections, maintenance & documents
@@ -13,7 +13,7 @@
 10. [ ] M10 — Final polish, audits, full playwright pass, Lighthouse, build
 
 ## Status
-M1–M2 done. Next: M3 WhatsApp AI concierge simulator (src/components/concierge/ConciergeWidget.tsx is a stub; brain is in src/services/ai.ts).
+M1–M3 done. Next: M4 admin (layout + role switcher + overview, bookings table/timeline, fleet, customers). Admin pages are stubs in src/pages/admin.
 
 ## Key decisions
 - Vite 8 + React 19 + TS 6, TanStack Router (code-based routes in src/router.tsx, every page lazy-loaded).
@@ -24,6 +24,8 @@ M1–M2 done. Next: M3 WhatsApp AI concierge simulator (src/components/concierge
 - Demo data: seeded generator (src/mocks/generate.ts) → in-browser store (src/lib/db.ts) persisted to localStorage; dates auto-shift to stay relative to today.
 - Unsplash images downloaded via the public download endpoint (search pages are bot-protected), converted to WebP 1400/640 in public/images.
 - Hero depth map generated from the photo's luminance mask (public/images/hero/hero-depth.png).
+- Store uses Immer (structural sharing) so selectors stay referentially stable.
+- Concierge persona = logged-in customer if they have an active rental, else demo customer c-1 (Chiamaka, active Camry). Chat mirrors into admin inbox as conversation `w-sim`.
 - Public-site routes used: /business (corporate page) and /earn (partner owners page) because /corporate and /partner are the portals.
 
 ## Known issues

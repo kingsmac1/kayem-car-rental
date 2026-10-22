@@ -1,4 +1,5 @@
 import { useRef, useSyncExternalStore } from 'react'
+import { produce } from 'immer'
 import { DEMO_VERSION, generateDemoState } from '@/mocks/generate'
 import type { DemoState } from '@/mocks/types'
 import { DAY, startOfDay } from './utils'
@@ -63,10 +64,9 @@ function persist() {
 
 export const db = {
   get: () => state,
+  /** Immutable update with structural sharing (unchanged slices keep their identity). */
   set(updater: (draft: DemoState) => DemoState | void) {
-    const draft = structuredClone(state)
-    const result = updater(draft)
-    state = result ?? draft
+    state = produce(state, updater) as DemoState
     persist()
     listeners.forEach((l) => l())
   },
