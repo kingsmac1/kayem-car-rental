@@ -90,7 +90,7 @@ export const brand = {
   },
 
   /** Public URL once deployed, used for Open Graph and JSON-LD. */
-  siteUrl: 'https://kayem-car-rental.pages.dev',
+  siteUrl: 'https://kayem.emkaydigitals.com',
 
   /** Demo-mode admin user shown on mock login. */
   demoOwner: { name: 'Emeka Okafor', email: 'owner@kayem.demo' },
