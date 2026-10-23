@@ -32,3 +32,6 @@ research/img-raw
 
 # Supabase CLI local state
 supabase/.temp
+
+# Rendered email previews (npm run email:preview)
+email-previews
