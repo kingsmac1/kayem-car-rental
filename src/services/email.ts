@@ -71,6 +71,7 @@ export const emailService = {
       total: b.total,
       paid: b.paid,
       deposit: b.deposit,
+      status: b.status === 'pending' ? 'pending' : 'confirmed',
     })
   },
 

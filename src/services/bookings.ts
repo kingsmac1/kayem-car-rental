@@ -50,7 +50,7 @@ export const bookingService = {
       d.bookings.push(booking)
     })
     if (actor) audit(`Created booking ${booking.ref}`)
-    if (booking.status === 'confirmed') void emailService.bookingConfirmed(booking.id)
+    if (booking.status === 'confirmed' || booking.status === 'pending') void emailService.bookingConfirmed(booking.id)
     return booking
   },
 

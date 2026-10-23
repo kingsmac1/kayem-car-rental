@@ -33,6 +33,8 @@ export interface BookingConfirmed {
   paid: number
   deposit: number
   manageUrl: string
+  /** 'pending' while staff review the ID check; a second, confirmed email follows. */
+  status?: 'confirmed' | 'pending'
 }
 
 export interface PickupReminder {
@@ -119,9 +121,13 @@ function carLine(car: CarInfo) {
 export function bookingConfirmed(d: BookingConfirmed): Rendered {
   const balance = d.total - d.paid
   const selfDrive = d.mode === 'self-drive'
+  const pending = d.status === 'pending'
   const body = [
-    heading(`You're booked, ${esc(firstName(d.name))}.`),
-    para(`Your ${esc(d.car.name)} is reserved. Show this reference at pickup or quote it when you message us.`),
+    heading(pending ? `Booking received, ${esc(firstName(d.name))}.` : `You're booked, ${esc(firstName(d.name))}.`),
+    para(pending
+      ? `Your ${esc(d.car.name)} is held for you and your payment is in. We're double-checking your ID, which usually takes about 15 minutes.`
+      : `Your ${esc(d.car.name)} is reserved. Show this reference at pickup or quote it when you message us.`),
+    pending ? callout("<strong>One quick check left.</strong> Your selfie needs a second look from our team. We'll email you as soon as the booking is confirmed. Nothing else is needed from you.", 'warn') : '',
     plate(d.ref),
     d.car.image ? photo(d.car.image, d.car.name) : '',
     journey({ label: 'Pickup', when: when(d.start), where: d.pickup }, { label: 'Return', when: when(d.end), where: d.dropoff }),
@@ -146,7 +152,7 @@ export function bookingConfirmed(d: BookingConfirmed): Rendered {
   ].join('')
 
   const text = [
-    `You're booked, ${firstName(d.name)}.`,
+    pending ? `Booking received, ${firstName(d.name)}. We're double-checking your ID and will email you once it's confirmed (usually about 15 minutes).` : `You're booked, ${firstName(d.name)}.`,
     `Booking reference: ${d.ref}`,
     ``,
     `Car: ${d.car.name}${d.car.plate ? ` (${d.car.plate})` : ''}`,
@@ -162,8 +168,12 @@ export function bookingConfirmed(d: BookingConfirmed): Rendered {
   ].filter((l) => l !== '').join('\n')
 
   return {
-    subject: `Booking confirmed: ${d.car.name}, ${day(d.start)} (${d.ref})`,
-    html: layout({ title: 'Booking confirmed', preheader: `Pickup ${when(d.start)} at ${d.pickup}. Reference ${d.ref}.`, body }),
+    subject: pending ? `Booking received: ${d.car.name}, ID check in progress (${d.ref})` : `Booking confirmed: ${d.car.name}, ${day(d.start)} (${d.ref})`,
+    html: layout({
+      title: pending ? 'Booking received' : 'Booking confirmed',
+      preheader: pending ? `Your car is held while we check your ID. Usually about 15 minutes.` : `Pickup ${when(d.start)} at ${d.pickup}. Reference ${d.ref}.`,
+      body,
+    }),
     text,
   }
 }

@@ -99,6 +99,7 @@ const clean: Clean = {
     paid: money(d.paid),
     deposit: money(d.deposit),
     manageUrl: account,
+    status: d.status === 'pending' ? 'pending' : 'confirmed',
   }),
   booking_extended: (d) => ({
     name: text(d.name, 50, true),
