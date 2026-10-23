@@ -21,7 +21,8 @@ export const tone = {
   mute: '#6E6A61',
   line: '#E4E0D6',
   accent: c.accent,
-  accentInk: c.accentInk,
+  /** Text on the yellow accent is always pure black, whatever the brand's ink is. */
+  onAccent: '#000000',
   ok: '#1F8A4C',
   warn: '#A86A00',
   bad: '#C8372D',
@@ -82,11 +83,12 @@ export function para(html: string, opts: { mute?: boolean; small?: boolean } = {
 /** Solid button that survives Outlook: the padding lives on the cell, not the link. */
 export function button(label: string, href: string, kind: 'primary' | 'secondary' = 'primary') {
   const bg = kind === 'primary' ? tone.accent : tone.paper
-  const fg = kind === 'primary' ? tone.accentInk : tone.ink
+  const fg = kind === 'primary' ? tone.onAccent : tone.ink
   const border = kind === 'primary' ? tone.accent : tone.ink
+  // The inner span repeats the colour because some webmail apps restyle bare links.
   return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:8px 0 24px;"><tr>
-<td bgcolor="${bg}" style="background:${bg};border:2px solid ${border};border-radius:6px;">
-<a href="${esc(href)}" style="display:inline-block;padding:13px 26px;font-family:${font.body};font-size:15px;line-height:20px;font-weight:700;color:${fg};text-decoration:none;">${esc(label)}</a>
+<td bgcolor="${bg}"${kind === 'primary' ? ' class="accent-bg"' : ''} style="background:${bg};border:2px solid ${border};border-radius:6px;">
+<a href="${esc(href)}"${kind === 'primary' ? ' class="on-accent"' : ''} style="display:inline-block;padding:13px 26px;font-family:${font.body};font-size:15px;line-height:20px;font-weight:700;color:${fg};text-decoration:none;"><span${kind === 'primary' ? ' class="on-accent"' : ''} style="color:${fg};">${esc(label)}</span></a>
 </td></tr></table>`
 }
 
@@ -98,8 +100,8 @@ export function plate(ref: string, caption = 'Booking reference') {
   return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:4px 0 28px;"><tr><td>
 <p style="margin:0 0 8px;font-family:${font.body};font-size:13px;line-height:18px;color:${tone.mute};">${esc(caption)}</p>
 <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-<td bgcolor="${tone.accent}" style="background:${tone.accent};border:3px solid ${tone.ink};border-radius:8px;padding:10px 22px 11px;">
-<span style="font-family:${font.plate};font-size:26px;line-height:30px;letter-spacing:4px;color:${tone.ink};white-space:nowrap;">${esc(ref)}</span>
+<td bgcolor="${tone.accent}" class="accent-bg" style="background:${tone.accent};border:3px solid ${tone.onAccent};border-radius:8px;padding:10px 22px 11px;">
+<span class="on-accent" style="font-family:${font.plate};font-size:26px;line-height:30px;letter-spacing:4px;color:${tone.onAccent};white-space:nowrap;">${esc(ref)}</span>
 </td></tr></table>
 </td></tr></table>`
 }
@@ -188,6 +190,9 @@ export function layout({ title, preheader, body, audience = 'customer' }: Layout
 <style>
   body { margin:0; padding:0; -webkit-text-size-adjust:100%; }
   a { color:${tone.ink}; }
+  /* Outlook.com and Outlook apps in dark mode recolour text; keep black on yellow. */
+  [data-ogsc] .on-accent { color:${tone.onAccent} !important; }
+  [data-ogsb] .accent-bg { background-color:${tone.accent} !important; }
   @media (max-width: 620px) {
     .shell { width:100% !important; }
     .pad { padding-left:22px !important; padding-right:22px !important; }
