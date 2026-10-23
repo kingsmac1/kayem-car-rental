@@ -1,4 +1,4 @@
-# Emkay Car Rental (Rental OS) — Progress
+# Kayem Car Rental (Rental OS) — Progress
 
 ## Build plan
 1. [x] M1 — Reference study (MOTION-SPEC.md), impeccable init (PRODUCT.md, DESIGN.md), Vite+React+TS+TanStack Router setup, brand config, design system, mock data, service layer
@@ -16,6 +16,7 @@
 All 10 milestones done. Audit results in AUDIT.md. Possible follow-ups: verify Lighthouse on modern hardware / PageSpeed after deploy; replace placeholder photos, logos, testimonials per client; connect real services (see README §5).
 
 ## Key decisions
+- 2026-10-23: brand renamed Emkay → Kayem (brand.ts: name, shortName, logoText, monogram K, slug kayem, refPrefix KYM, siteUrl). New drawn logo mark `logoMarkPath` (italic split-arm K) rendered by src/components/BrandMark.tsx and the favicon. DEMO_VERSION bumped to 4 so saved demo data regenerates with KYM- refs. Contact email emkaydigitals@gmail.com kept on purpose (real address). Project folder name unchanged.
 - Vite 8 + React 19 + TS 6, TanStack Router (code-based routes in src/router.tsx, every page lazy-loaded).
 - `.npmrc` legacy-peer-deps=true (an optional peer of @hookform/resolvers conflicts; harmless).
 - shadcn/ui pattern: Radix primitives (`radix-ui`) + cva + tailwind-merge, hand-written in src/components/ui, restyled.

@@ -1,4 +1,4 @@
-# Design — Emkay Car Rental
+# Design — Kayem Car Rental
 
 ## Visual thesis
 A night pit-lane timing sheet. Near-black asphalt, off-white type, fine 1px column lines like a timing grid, and one racing-yellow used only where the eye should go: the action, the key number, the live state. Starting lights, chequered flags and number boards are the native vocabulary.

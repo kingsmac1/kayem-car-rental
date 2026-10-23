@@ -1,3 +1,4 @@
+import { BrandMark } from '@/components/BrandMark'
 import { Link } from '@tanstack/react-router'
 import { useEffect, type ReactNode } from 'react'
 import { brand } from '@/config/brand'
@@ -13,7 +14,7 @@ export function PortalShell({ portal, who, tabs, tab, onTab, children, actions }
       <header className="sticky top-0 z-30 border-b border-line bg-ink/90 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-6xl items-center gap-3 px-4 md:px-6">
           <Link to="/" className="flex items-center gap-2">
-            <span className="grid size-8 place-items-center bg-accent font-display text-[16px] font-extrabold text-accent-ink">{brand.monogram}</span>
+            <BrandMark className="size-8" />
             <span className="hidden text-[14px] font-bold sm:inline">{brand.shortName}</span>
           </Link>
           <span className="h-5 w-px bg-line" />

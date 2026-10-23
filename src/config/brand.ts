@@ -9,17 +9,25 @@
 
 export const brand = {
   /** Full trading name, used in titles, legal pages and receipts. */
-  name: 'Emkay Car Rental',
+  name: 'Kayem Car Rental',
   /** Short name for tight spaces (nav, chat headers, receipts). */
-  shortName: 'Emkay',
+  shortName: 'Kayem',
   /** Wordmark text shown in the header logo. */
-  logoText: 'EMKAY',
-  /** Single letter used in the favicon and the loader. */
-  monogram: 'E',
+  logoText: 'KAYEM',
+  /** Single letter used where the drawn mark can't be (fallback text, screen readers). */
+  monogram: 'K',
+  /**
+   * The logo mark: SVG path(s) drawn on a 32×32 grid, filled with the accent-ink colour
+   * on an accent tile. Used by the header logo, favicon, loader, admin and portals.
+   * Replace with a client's own mark (keep the 32×32 viewBox), or set to '' to fall back to `monogram`.
+   * Default: a forward-leaning "K" with a split upper arm, like a chequered-flag cut.
+   */
+  logoMarkPath:
+    'M9.2 6h4.6l-3.4 20H5.8z M14.6 15.2L22.4 6h5.4l-8.1 9.2z M16.2 17.4h5.2l4.3 8.6h-5.3z',
   /** Short lowercase handle for demo domains (pay.<slug>.demo) and emails. */
-  slug: 'emkay',
-  /** Booking reference prefix, e.g. EMK-4123. */
-  refPrefix: 'EMK',
+  slug: 'kayem',
+  /** Booking reference prefix, e.g. KYM-4123. */
+  refPrefix: 'KYM',
   tagline: 'Premium cars. Zero hassle.',
   description:
     'Self-drive and chauffeur car hire in Lagos, Abuja and Port Harcourt. Verified customers, tracked cars, transparent deposits and 24/7 WhatsApp booking.',
@@ -82,10 +90,10 @@ export const brand = {
   },
 
   /** Public URL once deployed, used for Open Graph and JSON-LD. */
-  siteUrl: 'https://emkay-car-rental.pages.dev',
+  siteUrl: 'https://kayem-car-rental.pages.dev',
 
   /** Demo-mode admin user shown on mock login. */
-  demoOwner: { name: 'Emeka Okafor', email: 'owner@emkay.demo' },
+  demoOwner: { name: 'Emeka Okafor', email: 'owner@kayem.demo' },
 } as const
 
 export type City = (typeof brand.cities)[number]

@@ -1,4 +1,4 @@
-# Emkay Car Rental — Rental OS (demo)
+# Kayem Car Rental — Rental OS (demo)
 
 A fully clickable demo of a complete car-rental system: a cinematic customer website with booking, ID verification and a WhatsApp AI concierge, plus an admin dashboard, a chauffeur app, a corporate portal and a partner-owner portal.
 

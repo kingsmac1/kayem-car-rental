@@ -6,7 +6,9 @@ import { brand } from './src/config/brand.ts'
 
 /** Fills index.html meta tags, favicon and JSON-LD from src/config/brand.ts. */
 function brandHtml(): Plugin {
-  const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="${brand.colors.ink}"/><rect x="6" y="6" width="52" height="52" fill="${brand.colors.accent}"/><text x="32" y="46" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="40" fill="${brand.colors.accentInk}">${brand.monogram}</text></svg>`
+  const favicon = brand.logoMarkPath
+    ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="${brand.colors.accent}"/><path transform="translate(4.8 4.8) scale(.7)" fill="${brand.colors.accentInk}" d="${brand.logoMarkPath}"/></svg>`
+    : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="${brand.colors.accent}"/><text x="32" y="46" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="40" fill="${brand.colors.accentInk}">${brand.monogram}</text></svg>`
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'AutoRental',

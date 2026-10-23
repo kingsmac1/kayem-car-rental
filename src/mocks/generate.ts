@@ -10,7 +10,7 @@ import type {
 } from './types'
 import { images } from '@/data/images'
 
-export const DEMO_VERSION = 3
+export const DEMO_VERSION = 4
 const SEED = 20260614
 
 const phone = (n: number) => `+234 ${[803, 806, 813, 816, 703, 706, 810, 905, 908, 802][n % 10]} ${String(100 + ((n * 389) % 899))} ${String(1000 + ((n * 7331) % 8999))}`

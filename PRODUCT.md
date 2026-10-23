@@ -35,7 +35,7 @@ Demos happen live in meetings on a laptop or phone. Data must look current on an
 - Performance budget: portals code-split away from the public site; Three.js lazily on home hero only; Lighthouse mobile 80+.
 
 ## Brand Commitments
-Default brand: **Emkay Car Rental**, tagline "Premium cars. Zero hassle." Contact +234 902 798 9060, emkaydigitals@gmail.com. Fonts pinned: Unbounded, Michroma, Manrope, Geist Mono. One racing-yellow accent on near-black.
+Default brand: **Kayem Car Rental**, tagline "Premium cars. Zero hassle." Contact +234 902 798 9060, emkaydigitals@gmail.com. Fonts pinned: Unbounded, Michroma, Manrope, Geist Mono. One racing-yellow accent on near-black.
 
 ## Evidence on Hand
 No real testimonials, client logos, fleet photos or metrics. Everything is placeholder/mock and must read as demo content to be replaced per client (logos are placeholder wordmarks, testimonials are demo).

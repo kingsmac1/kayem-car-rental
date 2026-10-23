@@ -1,3 +1,4 @@
+import { BrandMark } from '@/components/BrandMark'
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { brand } from '@/config/brand'
@@ -49,6 +50,7 @@ export function Loader({ onDone }: { onDone?: () => void }) {
           role="status"
           aria-label={`Loading ${brand.name}`}
         >
+          <BrandMark className="mb-6 size-14" />
           <p className="display text-[clamp(40px,9vw,96px)] font-extrabold tracking-[-0.04em] text-paper">{brand.logoText}</p>
           <div className="mt-8 flex gap-3" aria-hidden>
             {[1, 2, 3, 4, 5].map((n) => (

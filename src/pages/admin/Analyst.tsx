@@ -1,3 +1,4 @@
+import { BrandMark } from '@/components/BrandMark'
 import { useEffect, useRef, useState } from 'react'
 import { Bot, Send, Sparkles } from 'lucide-react'
 import { brand } from '@/config/brand'
@@ -119,7 +120,7 @@ export default function Analyst() {
         <Panel title="Daily WhatsApp summary (preview)" action={<span className="text-[12px] text-mute">Sent 7:00am</span>}>
           <div className="rounded-lg bg-[#0b141a] p-3">
             <div className="flex items-center gap-2 border-b border-white/5 pb-2">
-              <span className="grid size-8 place-items-center rounded-full bg-accent font-display text-[14px] font-extrabold text-accent-ink">{brand.monogram}</span>
+              <BrandMark round className="size-8" />
               <span className="text-[13px] font-semibold text-[#e9edef]">{brand.shortName} Rental OS</span>
             </div>
             <div className="mt-3 max-w-[92%] rounded-lg rounded-tl-none bg-[#202c33] px-3 py-2 text-[13.5px] leading-relaxed text-[#e9edef]">

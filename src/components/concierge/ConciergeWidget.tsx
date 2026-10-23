@@ -1,3 +1,4 @@
+import { BrandMark } from '@/components/BrandMark'
 import { AnimatePresence, motion } from 'motion/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ArrowLeft, Check, CheckCheck, MoreVertical, Paperclip, Phone, RotateCcw, Send, Smile, Video, X } from 'lucide-react'
@@ -196,7 +197,7 @@ export default function ConciergeWidget() {
               <button type="button" onClick={() => setOpen(false)} className="grid size-9 place-items-center rounded-full hover:bg-white/5 md:hidden" aria-label="Back">
                 <ArrowLeft className="size-5" />
               </button>
-              <span className="grid size-10 place-items-center rounded-full bg-accent font-display text-[17px] font-extrabold text-accent-ink">{brand.monogram}</span>
+              <BrandMark round className="size-10" />
               <div className="min-w-0 flex-1">
                 <p className="flex items-center gap-1 truncate text-[15px] font-semibold">
                   {brand.shortName} Concierge

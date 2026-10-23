@@ -1,3 +1,4 @@
+import { BrandMark } from '@/components/BrandMark'
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { toast } from 'sonner'
@@ -36,7 +37,7 @@ export default function Settings() {
             <Panel title="Brand preview">
               <div className="border border-line bg-ink p-5">
                 <div className="flex items-center gap-2.5">
-                  <span className="grid size-10 place-items-center bg-accent font-display text-[20px] font-extrabold text-accent-ink">{brand.monogram}</span>
+                  <BrandMark className="size-10" />
                   <span className="font-display text-[18px] font-bold tracking-[0.08em]">{brand.logoText}</span>
                 </div>
                 <p className="display mt-6 text-[34px] font-extrabold uppercase">{brand.tagline}</p>

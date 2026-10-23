@@ -1,3 +1,4 @@
+import { BrandMark } from '@/components/BrandMark'
 import { Link, Navigate, Outlet, useRouterState } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 import {
@@ -60,7 +61,7 @@ export default function AdminLayout() {
   const sidebar = (
     <nav aria-label="Admin" className="flex h-full flex-col">
       <Link to="/admin" className="flex items-center gap-2.5 px-4 py-4">
-        <span className="grid size-8 place-items-center bg-accent font-display text-[16px] font-extrabold text-accent-ink">{brand.monogram}</span>
+        <BrandMark className="size-8" />
         <span>
           <span className="block text-[14px] font-bold leading-tight">{brand.shortName} Rental OS</span>
           <span className="text-[11.5px] text-mute">Admin</span>

@@ -195,7 +195,7 @@ from cars c;
 -- ---------------------------------------------------------------- bookings
 create table bookings (
   id uuid primary key default gen_random_uuid(),
-  ref text not null unique,       -- EMK-4123
+  ref text not null unique,       -- KYM-4123
   car_id uuid not null references cars(id),
   customer_id uuid not null references customers(id),
   corporate_id uuid references corporate_accounts(id),

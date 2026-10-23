@@ -1,7 +1,7 @@
+import { BrandMark } from '@/components/BrandMark'
 import { useRouterState } from '@tanstack/react-router'
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { brand } from '@/config/brand'
 import { useReducedMotion } from '@/hooks/useMedia'
 
 /** Racing-style wipe between routes: a yellow panel with a chequered edge sweeps up and off. */
@@ -35,7 +35,7 @@ export function PageCurtain() {
           aria-hidden
         >
           <div className="flex flex-1 items-center justify-center bg-accent">
-            <span className="display text-[clamp(28px,6vw,64px)] font-extrabold text-accent-ink">{brand.monogram}</span>
+            <BrandMark bare className="size-[clamp(48px,9vw,96px)]" />
           </div>
           <div className="chequer h-7 bg-ink [background-size:14px_14px]" />
         </motion.div>

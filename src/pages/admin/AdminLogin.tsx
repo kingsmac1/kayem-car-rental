@@ -1,3 +1,4 @@
+import { BrandMark } from '@/components/BrandMark'
 import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { brand } from '@/config/brand'
@@ -34,7 +35,7 @@ export default function AdminLogin() {
     <main className="grid min-h-dvh place-items-center bg-ink px-4 py-10 font-body text-paper">
       <div className="w-full max-w-md">
         <div className="mb-8 flex items-center gap-3">
-          <span className="grid size-10 place-items-center bg-accent font-display text-[20px] font-extrabold text-accent-ink">{brand.monogram}</span>
+          <BrandMark className="size-10" />
           <div>
             <p className="font-bold">{brand.shortName} Rental OS</p>
             <p className="text-[13px] text-mute">Staff sign-in</p>
