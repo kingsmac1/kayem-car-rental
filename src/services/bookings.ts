@@ -7,6 +7,7 @@ import { brand } from '@/config/brand'
 import { audit, db } from '@/lib/db'
 import { addDays, latency } from '@/lib/utils'
 import type { Booking, BookingStatus } from '@/mocks/types'
+import { emailService } from './email'
 import { overlaps } from './fleet'
 
 export class BookingConflictError extends Error {
@@ -49,6 +50,7 @@ export const bookingService = {
       d.bookings.push(booking)
     })
     if (actor) audit(`Created booking ${booking.ref}`)
+    if (booking.status === 'confirmed') void emailService.bookingConfirmed(booking.id)
     return booking
   },
 
@@ -71,6 +73,7 @@ export const bookingService = {
       if (car && (patch.status === 'returned' || patch.status === 'closed') && car.status === 'rented') car.status = 'available'
     })
     if (patch.status) audit(`Moved ${current.ref} to ${patch.status}`)
+    if (patch.status === 'confirmed' && current.status === 'pending') void emailService.bookingConfirmed(id)
     return next
   },
 
@@ -92,6 +95,7 @@ export const bookingService = {
       x.depositStatus = x.depositStatus === 'held' ? 'refunded' : x.depositStatus
     })
     audit(`Cancelled ${b.ref} — ${reason}`)
+    void emailService.bookingCancelled(b)
   },
 
   /** Extend by N days. Throws BookingConflictError if the car is booked right after. */
@@ -112,6 +116,7 @@ export const bookingService = {
       x.extendedDays = (x.extendedDays ?? 0) + days
     })
     audit(`Extended ${b.ref} by ${days} day${days > 1 ? 's' : ''}`)
+    void emailService.bookingExtended(id, days, b.end, extra)
     return { newEnd, extra }
   },
 }

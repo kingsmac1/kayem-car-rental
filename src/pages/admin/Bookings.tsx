@@ -10,6 +10,7 @@ import { carName } from '@/mocks/cars'
 import { locationName } from '@/mocks/locations'
 import type { Booking, BookingStatus as BS } from '@/mocks/types'
 import { bookingService, BookingConflictError, STATUS_FLOW } from '@/services/bookings'
+import { emailService } from '@/services/email'
 import { paymentService } from '@/services/payments'
 import { AdminTitle, BookingStatus, SearchBox, Segmented, TableWrap, Td, Th } from '@/components/admin/kit'
 import { BookingForm } from '@/components/admin/BookingForm'
@@ -143,6 +144,11 @@ function BookingDrawer({ b, money }: { b: Booking; money: boolean }) {
   const driver = s.chauffeurs.find((d) => d.id === b.chauffeurId)
   const idx = STATUS_FLOW.indexOf(b.status)
   const next = idx >= 0 && idx < STATUS_FLOW.length - 1 ? STATUS_FLOW[idx + 1] : null
+  const reminder = b.status === 'confirmed' ? 'pickup' : b.status === 'active' ? 'return' : null
+  const emailReminder = async () => {
+    const sent = reminder === 'pickup' ? await emailService.pickupReminder(b.id) : await emailService.returnReminder(b.id)
+    if (!sent) throw new Error('The reminder email could not be sent. Try again in a moment.')
+  }
   const run = async (key: string, fn: () => Promise<unknown>, ok: string) => {
     setBusy(key)
     try {
@@ -182,6 +188,7 @@ function BookingDrawer({ b, money }: { b: Booking; money: boolean }) {
             <div className="mt-4 flex flex-wrap gap-2">
               {next && <Button size="app" loading={busy === 'adv'} onClick={() => run('adv', () => bookingService.advance(b.id), `${b.ref} moved to ${next}`)}>Mark as {next}</Button>}
               {['pending', 'confirmed', 'active'].includes(b.status) && <Button size="app" variant="subtle" onClick={() => setMode('edit')}>Edit</Button>}
+              {reminder && emailService.isRealAddress(c?.email) && <Button size="app" variant="subtle" loading={busy === 'remind'} onClick={() => run('remind', emailReminder, `${reminder === 'pickup' ? 'Pickup' : 'Return'} reminder emailed to ${c?.email}`)}>Email {reminder} reminder</Button>}
               {['pending', 'confirmed'].includes(b.status) && <Button size="app" variant="subtle" className="text-bad" loading={busy === 'cancel'} onClick={() => run('cancel', () => bookingService.cancel(b.id), `${b.ref} cancelled — deposit refunded`)}>Cancel</Button>}
             </div>
           </div>

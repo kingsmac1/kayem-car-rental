@@ -7,6 +7,7 @@ import { brand } from '@/config/brand'
 import { db } from '@/lib/db'
 import { latency } from '@/lib/utils'
 import { images, sm } from '@/data/images'
+import { emailService } from '@/services/email'
 import { PageHeader } from '@/components/site/PageHeader'
 import { RevealGroup } from '@/components/site/Reveal'
 import { Button } from '@/components/ui/button'
@@ -41,6 +42,7 @@ export default function Business() {
     db.set((d) => {
       d.audit.unshift({ id: `a-${Date.now()}`, at: new Date().toISOString(), actor: 'Website', role: 'Front Desk', action: `New corporate enquiry: ${v.company} (${v.kind}, ${v.city})` })
     })
+    void emailService.enquiry('corporate', v.email, v.name, [['Company', v.company], ['Type', v.kind], ['Name', v.name], ['Phone', v.phone], ['City', v.city], ['Volume', v.volume]], v.message)
     setSent(v.company)
   })
 

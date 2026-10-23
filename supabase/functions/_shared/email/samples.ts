@@ -10,7 +10,7 @@ const at = (hours: number) => {
   return new Date(base.getTime() + hours * H).toISOString()
 }
 const site = brand.siteUrl
-const car = { name: 'Toyota Land Cruiser 300', plate: 'LND-482-KJ', image: `${site}/email/sample-car.jpg` }
+const car = { name: 'Toyota Land Cruiser 300', plate: 'LND-482-KJ', image: `${site}/email/cars/land-cruiser.jpg` }
 
 export const samples: { [T in TemplateName]: TemplateData<T> } = {
   booking_confirmed: {
@@ -22,11 +22,9 @@ export const samples: { [T in TemplateName]: TemplateData<T> } = {
     pickup: 'Murtala Muhammed Airport, Arrivals',
     dropoff: '14 Admiralty Way, Lekki Phase 1',
     mode: 'self-drive',
-    extras: [{ label: 'Child seat', amount: 15000 }, { label: 'Airport delivery', amount: 25000 }],
-    days: 3,
-    dailyRate: 260000,
-    total: 820000,
-    paid: 820000,
+    lines: [{ label: '3 days × ₦260,000', amount: 780000 }, { label: 'Child seat', amount: 30000 }, { label: 'Promo WELCOME10', amount: -78000 }],
+    total: 732000,
+    paid: 732000,
     deposit: 300000,
     manageUrl: `${site}/account`,
   },
@@ -61,6 +59,34 @@ export const samples: { [T in TemplateName]: TemplateData<T> } = {
     ref: `${brand.refPrefix}-4127`,
     car,
     reviewUrl: 'https://g.page/r/review',
+  },
+  booking_extended: {
+    name: 'Chiamaka Okonkwo',
+    ref: `${brand.refPrefix}-4127`,
+    car,
+    days: 2,
+    previousEnd: at(72),
+    newEnd: at(120),
+    dropoff: '14 Admiralty Way, Lekki Phase 1',
+    extra: 520000,
+    total: 1252000,
+    manageUrl: `${site}/account`,
+  },
+  booking_cancelled: {
+    name: 'Chiamaka Okonkwo',
+    ref: `${brand.refPrefix}-4127`,
+    car,
+    start: at(48),
+    refund: 732000,
+    bookUrl: `${site}/fleet`,
+  },
+  welcome: { name: 'Chiamaka Okonkwo', points: 500, fleetUrl: `${site}/fleet` },
+  enquiry_received: { kind: 'corporate', name: 'Ronke Adesina' },
+  new_enquiry: {
+    kind: 'corporate',
+    fields: [['Company', 'Lekki Capital Partners'], ['Name', 'Ronke Adesina'], ['Email', 'travel@lekkicapital.com'], ['Phone', '+234 802 555 0199'], ['City', 'Lagos'], ['Volume', '5–20 trips a month']],
+    message: 'We host visiting partners every month and need airport pickups with a chauffeur, mostly Land Cruisers.',
+    adminUrl: `${site}/admin`,
   },
   owner_daily_summary: {
     date: at(0),

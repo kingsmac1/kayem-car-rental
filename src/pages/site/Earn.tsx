@@ -7,6 +7,7 @@ import { brand } from '@/config/brand'
 import { db } from '@/lib/db'
 import { cn, latency, naira } from '@/lib/utils'
 import type { PartnerOwner } from '@/mocks/types'
+import { emailService } from '@/services/email'
 import { PageHeader } from '@/components/site/PageHeader'
 import { Button } from '@/components/ui/button'
 import { Field, Input, Select } from '@/components/ui/input'
@@ -57,6 +58,7 @@ export default function Earn() {
     db.set((d) => {
       d.partners.unshift(p)
     })
+    void emailService.enquiry('partner', v.email, v.name, [['Name', v.name], ['Phone', v.phone], ['City', v.city], ['Car', `${v.year} ${v.make} ${v.model}`]])
     setSent(true)
   })
 

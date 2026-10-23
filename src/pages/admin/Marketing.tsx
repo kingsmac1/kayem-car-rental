@@ -5,6 +5,7 @@ import { toast } from 'sonner'
 import { audit, db, useDb } from '@/lib/db'
 import { fmtDateY, naira } from '@/lib/utils'
 import { carName } from '@/mocks/cars'
+import { emailService } from '@/services/email'
 import { notificationService } from '@/services/notifications'
 import { AdminTitle, TableWrap, Td, Th } from '@/components/admin/kit'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -23,13 +24,13 @@ export default function Marketing() {
     const b = s.bookings.find((x) => x.id === bookingId)!
     const c = s.customers.find((x) => x.id === b.customerId)!
     setSending(bookingId)
-    await notificationService.requestReview(c.phone, c.name)
+    const [, emailed] = await Promise.all([notificationService.requestReview(c.phone, c.name), emailService.reviewRequest(bookingId)])
     db.set((d) => {
       d.reviews.unshift({ id: `r-${Date.now()}`, bookingId, customerId: c.id, rating: 0, text: '', requested: new Date().toISOString(), status: 'requested' })
     })
     audit(`Sent Google review request to ${c.name}`)
     setSending(null)
-    toast.success(`Review request sent to ${c.name} on WhatsApp`)
+    toast.success(`Review request sent to ${c.name} on WhatsApp${emailed ? ' and email' : ''}`)
   }
 
   return (

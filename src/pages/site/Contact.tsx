@@ -6,6 +6,7 @@ import { CheckCircle2, Mail, MapPin, Phone } from 'lucide-react'
 import { brand } from '@/config/brand'
 import { latency, waLink } from '@/lib/utils'
 import { locations } from '@/mocks/locations'
+import { emailService } from '@/services/email'
 import { PageHeader } from '@/components/site/PageHeader'
 import { WhatsAppGlyph } from '@/components/site/SocialIcons'
 import { Button } from '@/components/ui/button'
@@ -56,7 +57,7 @@ export default function Contact() {
             <Button variant="ghost" onClick={() => { reset(); setSent(false) }}>Send another</Button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit(async () => { await latency(600, 900); setSent(true) })} noValidate className="grid gap-5 sm:grid-cols-2">
+          <form onSubmit={handleSubmit(async (v) => { await latency(600, 900); void emailService.enquiry('contact', v.email, v.name, [['Name', v.name], ['Topic', v.topic]], v.message); setSent(true) })} noValidate className="grid gap-5 sm:grid-cols-2">
             <Field label="Name" htmlFor="n" error={formState.errors.name?.message}><Input id="n" autoComplete="name" {...register('name')} aria-invalid={!!formState.errors.name} /></Field>
             <Field label="Email" htmlFor="e" error={formState.errors.email?.message}><Input id="e" type="email" autoComplete="email" {...register('email')} aria-invalid={!!formState.errors.email} /></Field>
             <Field label="Topic" htmlFor="t" className="sm:col-span-2"><Select id="t" {...register('topic')}>{['A booking', 'Deposit or refund', 'Corporate account', 'Listing my car', 'Something else'].map((k) => <option key={k}>{k}</option>)}</Select></Field>

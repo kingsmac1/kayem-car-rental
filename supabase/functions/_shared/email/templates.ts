@@ -27,9 +27,8 @@ export interface BookingConfirmed {
   dropoff: string
   mode: 'self-drive' | 'chauffeur'
   chauffeurName?: string
-  extras: Array<{ label: string; amount: number }>
-  days: number
-  dailyRate: number
+  /** Price lines exactly as quoted at checkout (rental, extras, season, promo). */
+  lines: Array<{ label: string; amount: number }>
   total: number
   paid: number
   deposit: number
@@ -129,8 +128,7 @@ export function bookingConfirmed(d: BookingConfirmed): Rendered {
     rows([
       ['Car', carLine(d.car)],
       ['Driving', selfDrive ? 'Self-drive' : esc(`With a chauffeur${d.chauffeurName ? ` (${d.chauffeurName})` : ''}`)],
-      ['Rental', `${money(d.dailyRate)} &times; ${d.days} day${d.days === 1 ? '' : 's'}`],
-      ...d.extras.map((x) => [esc(x.label), money(x.amount)] as [string, string]),
+      ...d.lines.map((x) => [x.label, x.amount < 0 ? `&minus;${money(-x.amount)}` : money(x.amount)] as [string, string]),
       balance > 0 ? ['Paid so far', money(d.paid)] : null,
       balance > 0 ? ['Due at pickup', money(balance)] : null,
     ], { total: [balance > 0 ? 'Total' : 'Total paid', money(d.total)] }),
@@ -288,6 +286,186 @@ export function reviewRequest(d: ReviewRequest): Rendered {
   }
 }
 
+export interface BookingExtended {
+  name: string
+  ref: string
+  car: CarInfo
+  days: number
+  previousEnd: string
+  newEnd: string
+  dropoff: string
+  extra: number
+  total: number
+  manageUrl: string
+}
+
+export function bookingExtended(d: BookingExtended): Rendered {
+  const body = [
+    heading(`Done. You have the car ${d.days === 1 ? 'one more day' : `${d.days} more days`}.`),
+    para(`Your ${esc(d.car.name)} is now yours until <strong>${esc(when(d.newEnd))}</strong>. Nothing else about the booking has changed.`),
+    plate(d.ref),
+    journey({ label: 'Was due back', when: when(d.previousEnd), where: d.dropoff }, { label: 'Now due back', when: when(d.newEnd), where: d.dropoff }),
+    rows([
+      ['Extra days', `${d.days}`],
+      ['Charged now', money(d.extra)],
+    ], { total: ['New booking total', money(d.total)] }),
+    button('View booking', d.manageUrl),
+    para(`Enjoy the extra time,<br/>${sign}`),
+  ].join('')
+
+  return {
+    subject: `Extended to ${when(d.newEnd)} (${d.ref})`,
+    html: layout({ title: 'Booking extended', preheader: `${d.car.name} now due back ${when(d.newEnd)}. ${money(d.extra)} charged.`, body }),
+    text: [
+      `Your booking ${d.ref} is extended by ${d.days} day${d.days === 1 ? '' : 's'}.`,
+      `${d.car.name} now due back ${when(d.newEnd)} at ${d.dropoff}.`,
+      `Charged now: ${money(d.extra)}. New total: ${money(d.total)}.`,
+      ``,
+      `View booking: ${d.manageUrl}`,
+      ``,
+      textFooter,
+    ].join('\n'),
+  }
+}
+
+export interface BookingCancelled {
+  name: string
+  ref: string
+  car: CarInfo
+  start: string
+  refund: number
+  bookUrl: string
+}
+
+export function bookingCancelled(d: BookingCancelled): Rendered {
+  const body = [
+    heading('Your booking is cancelled.'),
+    para(`We've cancelled ${esc(d.ref)}, the ${esc(d.car.name)} from ${esc(when(d.start))}.`),
+    d.refund > 0
+      ? rows([['Refund', money(d.refund)], ['Arrives in', '3 to 5 working days, to the card you paid with']])
+      : '',
+    callout(`Didn't cancel this yourself? Call <a href="tel:${brand.contact.phoneTel}" style="color:inherit;">${esc(brand.contact.phoneDisplay)}</a> straight away and we'll reinstate it if the car is still free.`, 'warn'),
+    button('Book another car', d.bookUrl, 'secondary'),
+  ].join('')
+
+  return {
+    subject: `Cancelled: ${d.ref}${d.refund > 0 ? `, ${money(d.refund)} refund on its way` : ''}`,
+    html: layout({ title: 'Booking cancelled', preheader: d.refund > 0 ? `${money(d.refund)} goes back to your card within 5 working days.` : `${d.ref} is cancelled.`, body }),
+    text: [
+      `Booking ${d.ref} (${d.car.name}, ${when(d.start)}) is cancelled.`,
+      d.refund > 0 ? `Refund: ${money(d.refund)}, back to your card in 3 to 5 working days.` : '',
+      `Didn't cancel this yourself? Call ${brand.contact.phoneDisplay}.`,
+      ``,
+      textFooter,
+    ].filter(Boolean).join('\n'),
+  }
+}
+
+export interface Welcome {
+  name: string
+  points: number
+  fleetUrl: string
+}
+
+export function welcome(d: Welcome): Rendered {
+  const body = [
+    heading(`Welcome to ${esc(brand.shortName)}, ${esc(firstName(d.name))}.`),
+    para(`Your account is ready${d.points > 0 ? `, and we've added <strong>${d.points.toLocaleString('en-NG')} welcome points</strong> to it` : ''}.`),
+    subheading('Three things that make renting with us easier'),
+    list([
+      '<strong>Verify once.</strong> Your NIN and licence check carries over to every future booking.',
+      '<strong>Book on WhatsApp.</strong> Message us any time and the concierge can quote, book and extend.',
+      '<strong>Transparent deposits.</strong> Every deduction comes with a photo. No surprises.',
+    ]),
+    button('Browse the fleet', d.fleetUrl),
+    para(`Welcome aboard,<br/>${sign}`),
+  ].join('')
+
+  return {
+    subject: `Welcome to ${brand.name}`,
+    html: layout({ title: 'Welcome', preheader: 'Your account is ready. Verify once, book in minutes, track every deposit.', body }),
+    text: [
+      `Welcome to ${brand.shortName}, ${firstName(d.name)}.`,
+      `Your account is ready${d.points > 0 ? ` and ${d.points} welcome points are on it` : ''}.`,
+      `Browse the fleet: ${d.fleetUrl}`,
+      ``,
+      textFooter,
+    ].join('\n'),
+  }
+}
+
+export type EnquiryKind = 'contact' | 'corporate' | 'partner'
+
+const enquiryCopy: Record<EnquiryKind, { heading: string; body: string; next: string[]; subject: string }> = {
+  contact: {
+    heading: 'We got your message.',
+    body: 'Thanks for getting in touch. A member of the team will reply by email within a few hours.',
+    next: ['We read your message and reply by email', 'For anything urgent, WhatsApp is fastest: a real person answers 24/7'],
+    subject: 'We got your message',
+  },
+  corporate: {
+    heading: 'Thanks. Your account manager will be in touch.',
+    body: "We've received your corporate enquiry and passed it to our accounts team.",
+    next: ['An account manager calls you within one working day', 'We agree rates, a credit limit and who can book', 'Your team books online or on WhatsApp, with one invoice each month'],
+    subject: 'Your corporate enquiry',
+  },
+  partner: {
+    heading: "Thanks. We'll be in touch about your car.",
+    body: "We've received your request to list your car with us.",
+    next: ['We call you within 2 working days to arrange an inspection', 'We check the car, papers and insurance, and fit a GPS tracker', 'Your car goes live and payouts start every month'],
+    subject: 'Your request to list your car',
+  },
+}
+
+export interface EnquiryReceived {
+  kind: EnquiryKind
+  name: string
+}
+
+export function enquiryReceived(d: EnquiryReceived): Rendered {
+  const copy = enquiryCopy[d.kind]
+  const body = [
+    heading(copy.heading),
+    para(`Hi ${esc(firstName(d.name))}, ${copy.body.charAt(0).toLowerCase()}${copy.body.slice(1)}`),
+    subheading('What happens next'),
+    list(copy.next),
+    button('Message us on WhatsApp', whatsappLink(), 'secondary'),
+    para(`Speak soon,<br/>${sign}`),
+  ].join('')
+
+  return {
+    subject: `${copy.subject} | ${brand.name}`,
+    html: layout({ title: copy.subject, preheader: copy.next[0], body }),
+    text: [`Hi ${firstName(d.name)},`, copy.body, '', ...copy.next.map((x) => `- ${x}`), '', textFooter].join('\n'),
+  }
+}
+
+export interface NewEnquiry {
+  kind: EnquiryKind
+  /** Label/value pairs from the form, in display order. */
+  fields: Array<[string, string]>
+  message?: string
+  adminUrl: string
+}
+
+const enquiryTitle: Record<EnquiryKind, string> = { contact: 'New message from the website', corporate: 'New corporate enquiry', partner: 'New car owner wants to list' }
+
+export function newEnquiry(d: NewEnquiry): Rendered {
+  const who = d.fields.find(([l]) => l === 'Name' || l === 'Company')?.[1] ?? 'Someone'
+  const body = [
+    heading(esc(enquiryTitle[d.kind])),
+    rows(d.fields.map(([l, v]) => [l, esc(v)] as [string, string])),
+    d.message ? callout(esc(d.message).replaceAll('\n', '<br/>')) : '',
+    button('Open admin', d.adminUrl),
+  ].join('')
+
+  return {
+    subject: `${enquiryTitle[d.kind]}: ${who}`,
+    html: layout({ title: enquiryTitle[d.kind], preheader: d.fields.map(([, v]) => v).join(', ').slice(0, 90), body, audience: 'staff' }),
+    text: [enquiryTitle[d.kind], ...d.fields.map(([l, v]) => `${l}: ${v}`), d.message ? `\n${d.message}` : '', '', `Admin: ${d.adminUrl}`].join('\n'),
+  }
+}
+
 // ---- staff --------------------------------------------------------------------
 
 export function ownerDailySummary(d: OwnerDailySummary): Rendered {
@@ -380,6 +558,11 @@ export const templates = {
   return_reminder: returnReminder,
   deposit_refunded: depositRefunded,
   review_request: reviewRequest,
+  booking_extended: bookingExtended,
+  booking_cancelled: bookingCancelled,
+  welcome,
+  enquiry_received: enquiryReceived,
+  new_enquiry: newEnquiry,
   owner_daily_summary: ownerDailySummary,
   alert,
   auth_magic_link: authMagicLink,

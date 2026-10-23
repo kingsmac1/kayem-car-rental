@@ -8,6 +8,7 @@ import { brand } from '@/config/brand'
  */
 import { audit, db } from '@/lib/db'
 import { sleep } from '@/lib/utils'
+import { emailService } from './email'
 
 export type PayMethod = 'card' | 'transfer' | 'ussd'
 
@@ -58,7 +59,10 @@ export const paymentService = {
       const x = d.bookings.find((y) => y.id === bookingId)
       if (x) x.depositStatus = 'refunded'
     })
-    if (b) audit(`Refunded deposit for ${b.ref}`)
+    if (b) {
+      audit(`Refunded deposit for ${b.ref}`)
+      void emailService.depositSettled(bookingId)
+    }
   },
 
   async deductDeposit(bookingId: string, deductions: { label: string; amount: number; kind: 'damage' | 'fuel' | 'late' | 'fine' | 'cleaning'; photo?: string }[]) {
@@ -71,6 +75,9 @@ export const paymentService = {
         x.depositStatus = deductions.length ? 'deducted' : 'refunded'
       }
     })
-    if (b) audit(`Deducted ₦${deductions.reduce((s, x) => s + x.amount, 0).toLocaleString()} from deposit for ${b.ref}`)
+    if (b) {
+      audit(`Deducted ₦${deductions.reduce((s, x) => s + x.amount, 0).toLocaleString()} from deposit for ${b.ref}`)
+      void emailService.depositSettled(bookingId)
+    }
   },
 }

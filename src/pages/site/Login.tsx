@@ -7,6 +7,7 @@ import { toast } from 'sonner'
 import { db, setSession } from '@/lib/db'
 import { latency } from '@/lib/utils'
 import type { Customer } from '@/mocks/types'
+import { emailService } from '@/services/email'
 import { brand } from '@/config/brand'
 import { Button } from '@/components/ui/button'
 import { Field, Input } from '@/components/ui/input'
@@ -61,6 +62,7 @@ export default function Login() {
       d.customers.unshift(c)
     })
     setSession({ customerId: c.id })
+    void emailService.welcome(c.name, c.email, c.points)
     toast.success('Account created — 500 welcome points added')
     navigate({ to: '/account' })
   })
