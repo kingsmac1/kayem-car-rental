@@ -13,7 +13,7 @@ import { DAY, startOfDay } from './utils'
  * - resetDemo() throws away changes and regenerates the seed data.
  *
  * TODO: connect real provider — when Supabase is connected, services stop
- * calling this module and query tables instead (see supabase/schema.sql).
+ * calling this module and query tables instead (see supabase/migrations/).
  */
 
 const KEY = 'rentalos:demo'

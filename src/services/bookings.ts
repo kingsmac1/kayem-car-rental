@@ -2,7 +2,7 @@ import { brand } from '@/config/brand'
 /**
  * Bookings service — create, list, update, cancel and extend.
  * TODO: connect real provider — swap `db` for Supabase (`bookings` table) and run
- * the overlap check as a Postgres exclusion constraint / RPC (see supabase/schema.sql).
+ * the overlap check as a Postgres exclusion constraint / RPC (see supabase/migrations/).
  */
 import { audit, db } from '@/lib/db'
 import { addDays, latency } from '@/lib/utils'

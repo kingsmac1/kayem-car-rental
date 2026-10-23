@@ -1,7 +1,7 @@
 /**
  * Fleet service — cars, availability and status.
  * TODO: connect real provider — replace reads/writes on `db` with Supabase queries
- * on the `cars`, `car_documents` and `bookings` tables (see supabase/schema.sql).
+ * on the `cars`, `car_documents` and `bookings` tables (see supabase/migrations/).
  */
 import { db } from '@/lib/db'
 import { latency } from '@/lib/utils'

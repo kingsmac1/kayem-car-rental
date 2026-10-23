@@ -73,7 +73,7 @@ Every integration sits behind one file in `src/services/`. Each function current
 
 | File | Will connect to | What changes |
 |---|---|---|
-| `bookings.ts`, `fleet.ts` | **Supabase** | Run `supabase/schema.sql` in Supabase → SQL Editor, then replace the `db` calls with Supabase queries. Double-booking is enforced by a database constraint in the schema. |
+| `bookings.ts`, `fleet.ts` | **Supabase** | The schema lives in `supabase/migrations/` and is already applied to the linked project (`supabase db push --linked` applies new ones). Replace the `db` calls with Supabase queries. Double-booking is enforced by a database constraint in the schema. |
 | `verification.ts` | **Dojah** (or Smile ID / Prembly) | Call NIN, licence and selfie-match endpoints from a Supabase Edge Function. Store only the result and reference — never the NIN or selfie. |
 | `payments.ts` | **Paystack** or **Flutterwave** | Initialise the transaction server-side, open Paystack Inline/Checkout, confirm via webhook. Use pre-authorisation for deposits. |
 | `whatsapp.ts` | **WhatsApp Business Cloud API** | A webhook Edge Function receives messages, stores them, and replies via the API. |

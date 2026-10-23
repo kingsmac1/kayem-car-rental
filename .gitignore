@@ -29,3 +29,6 @@ dist-ssr
 .playwright-cli
 .shots
 research/img-raw
+
+# Supabase CLI local state
+supabase/.temp
