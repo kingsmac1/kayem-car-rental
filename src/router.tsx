@@ -2,6 +2,7 @@ import { createRootRoute, createRoute, createRouter, lazyRouteComponent, Outlet 
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { Toaster } from 'sonner'
 import { NotFound } from '@/components/NotFound'
+import CookieConsent from '@/components/CookieConsent'
 
 // The demo switcher is tiny and shared by every portal.
 const DemoSwitcher = lazy(() => import('@/components/demo/DemoSwitcher'))
@@ -23,6 +24,7 @@ const rootRoute = createRootRoute({
   component: () => (
     <>
       <Outlet />
+      <CookieConsent />
       <LateDemoSwitcher />
       <Toaster
         position="bottom-center"
